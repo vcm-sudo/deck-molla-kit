@@ -1,0 +1,49 @@
+  <section class="slide" data-nota="COMPONENTE · cronograma terapeutico (Gantt). Uma linha por passo: ponte, washout, aferese, linfodeplecao, infusao, avaliacao. Ajustar --a (inicio) e --b (largura) em % do eixo; o eixo aqui vai de 0 a 9 meses.">
+    <div class="stage">
+      <style>
+      /* cronograma: barras que crescem da esquerda; --a = inicio, --b = largura, em % do eixo de tempo */
+      [data-id="modelo-comp-cronograma"] .cg{position:absolute;left:66px;right:66px;top:250px;bottom:236px;display:grid;grid-template-columns:330px 1fr;grid-auto-rows:1fr;column-gap:20px;row-gap:6px}
+      [data-id="modelo-comp-cronograma"] .cg .eixo{grid-column:2;position:relative;height:40px;align-self:end;border-bottom:2.5px solid var(--linha-forte)}
+      [data-id="modelo-comp-cronograma"] .cg .eixo span{position:absolute;bottom:8px;transform:translateX(-50%);font-family:var(--font-ut);font-size:17px;font-weight:600;color:var(--muted)}
+      [data-id="modelo-comp-cronograma"] .cg .lb{display:flex;flex-direction:column;justify-content:center;font-size:24px;font-weight:700;color:var(--tinta);line-height:1.2}
+      [data-id="modelo-comp-cronograma"] .cg .lb small{font-size:17px;font-weight:500;color:var(--muted);margin-top:3px}
+      [data-id="modelo-comp-cronograma"] .cg .faixa{position:relative;background:repeating-linear-gradient(90deg,transparent 0 calc(100%/9 - 1.5px),var(--linha) calc(100%/9 - 1.5px) calc(100%/9));border-radius:4px}
+      [data-id="modelo-comp-cronograma"] .cg .bar{position:absolute;top:22%;height:56%;left:var(--a);width:var(--b);border-radius:7px;background:var(--violeta);transform:scaleX(0);transform-origin:left center;transition:transform .9s cubic-bezier(.3,0,.2,1) .2s;display:flex;align-items:center;padding:0 16px;color:#fff;font-size:19px;font-weight:700;white-space:nowrap}
+      [data-id="modelo-comp-cronograma"] .cg .bar.wash{background:repeating-linear-gradient(135deg,#efe9fb 0 10px,#d9cdf3 10px 20px);color:var(--violeta);border:2px dashed var(--violeta)}
+      [data-id="modelo-comp-cronograma"] .cg .bar.curta{background:var(--tinta)}
+      [data-id="modelo-comp-cronograma"] .cg .marco{position:absolute;top:50%;left:var(--a);width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:var(--good);border:4px solid #fff;box-shadow:0 0 0 3px var(--good);scale:0;transition:scale .5s cubic-bezier(.2,1.4,.4,1) .3s}
+      [data-id="modelo-comp-cronograma"] .cg .marco.avalia{background:#fff;box-shadow:0 0 0 3px var(--violeta);border-color:var(--violeta)}
+      [data-id="modelo-comp-cronograma"] .cg .marco b{position:absolute;left:44px;top:50%;transform:translateY(-50%);font-size:19px;font-weight:700;color:var(--tinta);white-space:nowrap}
+      [data-id="modelo-comp-cronograma"] .cg .on .bar{transform:none}
+      [data-id="modelo-comp-cronograma"] .cg .on .marco{scale:1}
+      html.nofx [data-id="modelo-comp-cronograma"] .bar,#org [data-id="modelo-comp-cronograma"] .bar,html.nofx [data-id="modelo-comp-cronograma"] .marco,#org [data-id="modelo-comp-cronograma"] .marco{scale:1!important;transition:none!important}
+      </style>
+      <div class="topbar"><h1>Ponte de 4 meses, washout de 8 semanas, infusão no 7º mês</h1><span class="tag">Componente · cronograma</span></div>
+      <div class="sub">Cronograma ilustrativo da ponte até o CAR-T — cada linha entra com um passo; o eixo é em meses desde a decisão</div>
+
+      <div class="cg">
+        <div class="lb" data-passo="1">Ponte<small>tafasitamabe + lenalidomida</small></div>
+        <div class="faixa" data-passo="1"><div class="bar" style="--a:0%;--b:44.4%">4 meses · resposta parcial no 2º</div></div>
+
+        <div class="lb" data-passo="2">Washout<small>sem anti-CD19 circulante</small></div>
+        <div class="faixa" data-passo="2"><div class="bar wash" style="--a:44.4%;--b:22.2%">8 semanas</div></div>
+
+        <div class="lb" data-passo="3">Aférese<small>linfócitos preservados</small></div>
+        <div class="faixa" data-passo="3"><div class="marco" style="--a:66.7%"><b>mês 6</b></div></div>
+
+        <div class="lb" data-passo="4">Linfodepleção<small>Flu-Cy, 3 dias</small></div>
+        <div class="faixa" data-passo="4"><div class="bar curta" style="--a:73.3%;--b:4.4%"></div></div>
+
+        <div class="lb" data-passo="5">Infusão<small>axi-cel · CRS grau 2</small></div>
+        <div class="faixa" data-passo="5"><div class="marco" style="--a:77.8%"><b>mês 7</b></div></div>
+
+        <div class="lb" data-passo="6">Avaliação<small>PET no D+30</small></div>
+        <div class="faixa" data-passo="6"><div class="marco avalia" style="--a:88.9%"><b>mês 8</b></div></div>
+
+        <div class="eixo" data-reveal><span style="left:0">0</span><span style="left:11.1%">1</span><span style="left:22.2%">2</span><span style="left:33.3%">3</span><span style="left:44.4%">4</span><span style="left:55.6%">5</span><span style="left:66.7%">6</span><span style="left:77.8%">7</span><span style="left:88.9%">8</span><span style="left:100%">9 meses</span></div>
+      </div>
+
+      <div class="leitura" data-passo="6" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">O washout é a etapa que se esquece: 8 semanas entre a última dose do anti-CD19 e a aférese.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

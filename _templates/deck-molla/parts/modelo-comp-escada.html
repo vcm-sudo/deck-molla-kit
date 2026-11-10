@@ -1,0 +1,50 @@
+  <section class="slide" data-nota="COMPONENTE · escada de linhas de terapia. Cada degrau sobe com um passo; a seta entre degraus se traca. As opcoes de cada degrau sao ilustrativas: trocar pelas do tema.">
+    <div class="stage">
+      <style>
+      /* escada: degraus alinhados pela base, cada um mais alto; entram por passo com a seta entre eles */
+      [data-id="modelo-comp-escada"] .ec{position:absolute;left:66px;right:66px;top:250px;bottom:236px;display:grid;grid-template-columns:repeat(4,1fr);gap:26px;align-items:end}
+      [data-id="modelo-comp-escada"] .dg{position:relative;height:var(--h);background:var(--papel);border:1.5px solid var(--linha);border-top:8px solid var(--violeta);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;transform-origin:bottom center}
+      [data-id="modelo-comp-escada"] .dg[data-passo]{transform:translateY(24px) scaleY(.94)}
+      [data-id="modelo-comp-escada"] .dg[data-passo].on{transform:none}
+      [data-id="modelo-comp-escada"] .dg.fim{border-top-color:#0f6f7a}
+      [data-id="modelo-comp-escada"] .dg .n{font-family:var(--font-ut);font-size:17px;font-weight:700;letter-spacing:.16em;color:var(--violeta)}
+      [data-id="modelo-comp-escada"] .dg.fim .n{color:#0a545f}
+      [data-id="modelo-comp-escada"] .dg h3{font-size:30px;font-weight:800;color:var(--tinta);line-height:1.12;margin:6px 0 14px;letter-spacing:0;text-transform:none;font-family:inherit}
+      [data-id="modelo-comp-escada"] .dg ul{list-style:none;margin:0;padding:0}
+      [data-id="modelo-comp-escada"] .dg li{font-size:21px;line-height:1.3;color:var(--ink);padding:7px 0;border-top:1px solid var(--linha)}
+      [data-id="modelo-comp-escada"] .dg li b{color:var(--tinta)}
+      [data-id="modelo-comp-escada"] .dg .seta{position:absolute;left:-26px;bottom:calc(var(--hp) / 2);width:26px;height:26px;margin-bottom:-13px}
+      [data-id="modelo-comp-escada"] .dg .seta path{stroke:var(--violeta);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1}
+      [data-id="modelo-comp-escada"] .dg.on .seta path{animation:tracar .6s .3s forwards}
+      html.nofx [data-id="modelo-comp-escada"] .dg,#org [data-id="modelo-comp-escada"] .dg{transform:none!important}
+      html.nofx [data-id="modelo-comp-escada"] .seta path,#org [data-id="modelo-comp-escada"] .seta path{stroke-dashoffset:0!important;animation:none!important}
+      </style>
+      <div class="topbar"><h1>Quatro degraus: R-CHOP, terapia celular, biespecífico, ensaio</h1><span class="tag">Componente · escada</span></div>
+      <div class="sub">Linhas de terapia ilustrativas — cada degrau entra com um passo; as opções de cada um são exemplo</div>
+
+      <div class="ec">
+        <div class="dg" data-passo="1" style="--h:300px">
+          <div class="n">1ª LINHA</div><h3>Imunoquimioterapia</h3>
+          <ul><li><b>R-CHOP</b> × 6</li><li>pola-R-CHP no IPI 2–5</li></ul>
+        </div>
+        <div class="dg" data-passo="2" style="--h:400px;--hp:300px">
+          <svg class="seta" viewBox="0 0 26 26"><path d="M2 13 h18 M14 7 l6 6 -6 6" pathLength="1"/></svg>
+          <div class="n">2ª LINHA</div><h3>Terapia celular ou resgate</h3>
+          <ul><li><b>CAR-T</b> se recidiva ≤ 12 meses</li><li>R-quimio → auto-TCTH se sensível</li><li>sem TC: pola-R-GemOx · glofit-GemOx · tafa-lena</li></ul>
+        </div>
+        <div class="dg" data-passo="3" style="--h:500px;--hp:400px">
+          <svg class="seta" viewBox="0 0 26 26"><path d="M2 13 h18 M14 7 l6 6 -6 6" pathLength="1"/></svg>
+          <div class="n">3ª LINHA</div><h3>Biespecífico ou conjugado</h3>
+          <ul><li><b>glofitamabe · epcoritamabe</b></li><li>loncastuximabe</li><li>CAR-T se ainda não usado</li><li>tafa-lena se inelegível</li></ul>
+        </div>
+        <div class="dg fim" data-passo="4" style="--h:594px;--hp:500px">
+          <svg class="seta" viewBox="0 0 26 26"><path d="M2 13 h18 M14 7 l6 6 -6 6" pathLength="1"/></svg>
+          <div class="n">4ª LINHA E ALÉM</div><h3>Ensaio clínico e alogênico</h3>
+          <ul><li><b>ensaio clínico</b> sempre que houver</li><li>CAR-T de duplo alvo · CAR-T in vivo</li><li>alo-TCTH em resposta, no apto</li><li>cuidado paliativo integrado</li></ul>
+        </div>
+      </div>
+
+      <div class="leitura" data-passo="4" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">A escada sobe por elegibilidade, não por preferência: a pergunta de cada degrau é o que ainda cabe.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

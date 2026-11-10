@@ -1,0 +1,41 @@
+  <section class="slide" data-nota="COMPONENTE · cadeia veia a veia. Cinco etapas ligadas por um trilho que se preenche; cada passo acende a proxima etapa e avanca o trilho. Os <div data-passo> vazios antes do trilho sao os gatilhos. Trocar os dias pelos do produto/centro.">
+    <div class="stage">
+      <style>
+      /* cadeia veia a veia: trilho que se preenche (largura por gatilho) e etapas que acendem uma a uma */
+      [data-id="modelo-comp-veia-a-veia"] .vv{position:absolute;left:66px;right:66px;top:250px;bottom:236px}
+      [data-id="modelo-comp-veia-a-veia"] .trilho-vv{position:absolute;left:120px;right:120px;top:232px;height:10px;background:var(--violeta-tint);border-radius:5px;overflow:hidden}
+      [data-id="modelo-comp-veia-a-veia"] .trilho-vv .prog{height:100%;width:0;background:var(--violeta);transition:width .9s cubic-bezier(.3,0,.2,1)}
+      [data-id="modelo-comp-veia-a-veia"] [data-passo="2"].on ~ .trilho-vv .prog{width:25%}
+      [data-id="modelo-comp-veia-a-veia"] [data-passo="3"].on ~ .trilho-vv .prog{width:50%}
+      [data-id="modelo-comp-veia-a-veia"] [data-passo="4"].on ~ .trilho-vv .prog{width:75%}
+      [data-id="modelo-comp-veia-a-veia"] [data-passo="5"].on ~ .trilho-vv .prog{width:100%}
+      [data-id="modelo-comp-veia-a-veia"] .etapas{position:absolute;left:0;right:0;top:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr)}
+      [data-id="modelo-comp-veia-a-veia"] .et{display:flex;flex-direction:column;align-items:center;text-align:center}
+      [data-id="modelo-comp-veia-a-veia"] .et .ic{width:170px;height:170px;border-radius:50%;background:var(--papel);border:4px solid var(--linha);display:flex;align-items:center;justify-content:center;margin-top:152px;transition:border-color .5s,box-shadow .5s,background .5s;position:relative;z-index:1}
+      [data-id="modelo-comp-veia-a-veia"] .et .ic svg{width:88px;height:88px;stroke:var(--muted);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .5s}
+      [data-id="modelo-comp-veia-a-veia"] .et.on .ic{border-color:var(--violeta);background:var(--violeta-tint);box-shadow:0 0 0 8px rgba(88,56,155,.14)}
+      [data-id="modelo-comp-veia-a-veia"] .et.on .ic svg{stroke:var(--violeta)}
+      [data-id="modelo-comp-veia-a-veia"] .et .dia{font-family:var(--font-ut);font-size:22px;font-weight:600;color:var(--violeta);letter-spacing:.06em;margin-top:26px}
+      [data-id="modelo-comp-veia-a-veia"] .et .tit{font-size:28px;font-weight:700;color:var(--tinta);margin-top:10px;line-height:1.2}
+      [data-id="modelo-comp-veia-a-veia"] .et .sub{position:static;max-width:none;font-size:20px;font-weight:400;color:var(--muted);margin-top:8px;line-height:1.35;padding:0 14px}
+      html.nofx [data-id="modelo-comp-veia-a-veia"] .prog,#org [data-id="modelo-comp-veia-a-veia"] .prog{width:100%!important;transition:none!important}
+      </style>
+      <div class="topbar"><h1>Veia a veia: 21 a 28 dias entre a aférese e a infusão</h1><span class="tag">Componente · cadeia</span></div>
+      <div class="sub">Cadeia ilustrativa de produção do CAR-T autólogo — cada passo acende a etapa seguinte e avança o trilho</div>
+
+      <div class="vv">
+        <div data-passo="2"></div><div data-passo="3"></div><div data-passo="4"></div><div data-passo="5"></div>
+        <div class="trilho-vv" data-reveal><div class="prog"></div></div>
+        <div class="etapas">
+          <div class="et" data-passo="1"><div class="ic"><svg viewBox="0 0 64 64"><path d="M32 8 C22 22 14 30 14 40 a18 18 0 0 0 36 0 c0-10-8-18-18-32z"/><path d="M24 40 a8 8 0 0 0 8 8"/></svg></div><div class="dia">D0</div><div class="tit">Aférese</div><div class="sub">contagem de linfócitos preservada; sem bendamustina recente</div></div>
+          <div class="et" data-passo="2"><div class="ic"><svg viewBox="0 0 64 64"><rect x="6" y="18" width="34" height="26" rx="3"/><path d="M40 26h10l8 9v9H40z"/><circle cx="16" cy="48" r="5"/><circle cx="48" cy="48" r="5"/></svg></div><div class="dia">D1–D2</div><div class="tit">Transporte</div><div class="sub">crioconservação e envio ao centro de produção</div></div>
+          <div class="et" data-passo="3"><div class="ic"><svg viewBox="0 0 64 64"><path d="M24 8h16M28 8v18L14 50a6 6 0 0 0 5 9h26a6 6 0 0 0 5-9L36 26V8"/><path d="M20 42h24"/></svg></div><div class="dia">D3–D14</div><div class="tit">Transdução e expansão</div><div class="sub">vetor viral com o CAR; expansão ex vivo</div></div>
+          <div class="et" data-passo="4"><div class="ic"><svg viewBox="0 0 64 64"><rect x="12" y="8" width="40" height="48" rx="4"/><path d="M20 22h24M20 32h24M20 42h14"/><path d="M40 40l4 4 8-8"/></svg></div><div class="dia">D15–D20</div><div class="tit">Liberação</div><div class="sub">controle de qualidade, dose e esterilidade; devolução ao centro</div></div>
+          <div class="et" data-passo="5"><div class="ic"><svg viewBox="0 0 64 64"><path d="M22 6h20v30a10 10 0 0 1-20 0z"/><path d="M32 46v12M24 58h16"/><path d="M26 22h12"/></svg></div><div class="dia">D21–D28</div><div class="tit">Infusão</div><div class="sub">linfodepleção Flu-Cy nos 3 dias anteriores</div></div>
+        </div>
+      </div>
+
+      <div class="leitura" data-passo="5" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">A ponte cobre só a janela D0–D28; o tempo antes da aférese é o que a autorização decide.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

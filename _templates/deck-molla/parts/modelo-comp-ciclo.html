@@ -1,0 +1,66 @@
+  <section class="slide" data-nota="COMPONENTE · calendario de ciclo (28 dias). Passo 1 monta a grade; passo 2 pinta os dias da droga oral; passo 3 marca os dias da infusao. Os <div data-passo> vazios antes da grade sao os gatilhos (seletor de irmao). Para outro esquema, trocar as classes lena/tafa e a legenda.">
+    <div class="stage">
+      <style>
+      /* calendario de 28 dias: as celulas entram em cascata; os gatilhos vazios pintam a droga oral e marcam as infusoes */
+      [data-id="modelo-comp-ciclo"] .cc{position:absolute;left:66px;width:1180px;top:250px;bottom:236px;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:34px repeat(4,1fr);gap:10px}
+      [data-id="modelo-comp-ciclo"] .cc .dow{font-family:var(--font-ut);font-size:16px;font-weight:600;letter-spacing:.08em;color:var(--muted);text-align:center;align-self:center}
+      [data-id="modelo-comp-ciclo"] .cc .cell{position:relative;border:1.5px solid var(--linha);border-radius:12px;background:var(--papel);padding:10px 12px;opacity:0;scale:.9;transition:opacity .35s calc(var(--i)*.03s),scale .35s calc(var(--i)*.03s),background .6s,border-color .6s}
+      [data-id="modelo-comp-ciclo"] .cc.on .cell{opacity:1;scale:1}
+      [data-id="modelo-comp-ciclo"] .cc .cell .d{font-family:var(--font-ut);font-size:20px;font-weight:600;color:var(--tinta)}
+      [data-id="modelo-comp-ciclo"] .cc .cell .t{position:absolute;right:10px;top:8px;width:34px;height:34px;border-radius:50%;background:var(--violeta);color:#fff;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;scale:0;transition:scale .45s cubic-bezier(.2,1.4,.4,1)}
+      [data-id="modelo-comp-ciclo"] .cc .cell .o{position:absolute;left:12px;bottom:10px;font-size:15px;font-weight:600;color:var(--violeta);opacity:0;transition:opacity .5s}
+      [data-id="modelo-comp-ciclo"] [data-passo="2"].on ~ .cc .cell.lena{background:var(--violeta-tint);border-color:#c9b6ee}
+      [data-id="modelo-comp-ciclo"] [data-passo="2"].on ~ .cc .cell.lena .o{opacity:1}
+      [data-id="modelo-comp-ciclo"] [data-passo="3"].on ~ .cc .cell.tafa .t{scale:1}
+      [data-id="modelo-comp-ciclo"] .leg{position:absolute;left:1286px;right:66px;top:250px;bottom:236px;display:flex;flex-direction:column;gap:16px;justify-content:center}
+      [data-id="modelo-comp-ciclo"] .leg .chip .v{font-size:28px}
+      html.nofx [data-id="modelo-comp-ciclo"] .cell,#org [data-id="modelo-comp-ciclo"] .cell{opacity:1!important;scale:1!important;transition:none!important}
+      html.nofx [data-id="modelo-comp-ciclo"] .cell.lena,#org [data-id="modelo-comp-ciclo"] .cell.lena{background:var(--violeta-tint)!important}
+      html.nofx [data-id="modelo-comp-ciclo"] .cell.tafa .t,#org [data-id="modelo-comp-ciclo"] .cell.tafa .t{scale:1!important}
+      </style>
+      <div class="topbar"><h1>Ciclo de 28 dias: tafasitamabe semanal, lenalidomida D1–D21</h1><span class="tag">Componente · ciclo</span></div>
+      <div class="sub">Calendário ilustrativo de um ciclo — a grade entra em cascata, depois a droga oral e por fim as infusões</div>
+
+      <div data-passo="2"></div><div data-passo="3"></div>
+      <div class="cc" data-passo="1">
+        <div class="dow">SEG</div><div class="dow">TER</div><div class="dow">QUA</div><div class="dow">QUI</div><div class="dow">SEX</div><div class="dow">SÁB</div><div class="dow">DOM</div>
+        <div class="cell lena tafa" style="--i:0"><span class="d">D1</span><span class="t">T</span><span class="o">lena 25 mg</span></div>
+        <div class="cell lena" style="--i:1"><span class="d">D2</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:2"><span class="d">D3</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:3"><span class="d">D4</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:4"><span class="d">D5</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:5"><span class="d">D6</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:6"><span class="d">D7</span><span class="o">lena</span></div>
+        <div class="cell lena tafa" style="--i:7"><span class="d">D8</span><span class="t">T</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:8"><span class="d">D9</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:9"><span class="d">D10</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:10"><span class="d">D11</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:11"><span class="d">D12</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:12"><span class="d">D13</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:13"><span class="d">D14</span><span class="o">lena</span></div>
+        <div class="cell lena tafa" style="--i:14"><span class="d">D15</span><span class="t">T</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:15"><span class="d">D16</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:16"><span class="d">D17</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:17"><span class="d">D18</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:18"><span class="d">D19</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:19"><span class="d">D20</span><span class="o">lena</span></div>
+        <div class="cell lena" style="--i:20"><span class="d">D21</span><span class="o">lena</span></div>
+        <div class="cell tafa" style="--i:21"><span class="d">D22</span><span class="t">T</span></div>
+        <div class="cell" style="--i:22"><span class="d">D23</span></div>
+        <div class="cell" style="--i:23"><span class="d">D24</span></div>
+        <div class="cell" style="--i:24"><span class="d">D25</span></div>
+        <div class="cell" style="--i:25"><span class="d">D26</span></div>
+        <div class="cell" style="--i:26"><span class="d">D27</span></div>
+        <div class="cell" style="--i:27"><span class="d">D28</span></div>
+      </div>
+
+      <div class="leg">
+        <div class="chip" data-passo="2"><div class="v">D1–D21</div><div class="k">lenalidomida 25 mg/dia · 7 dias de pausa</div></div>
+        <div class="chip" data-passo="3"><div class="v">D1 · 8 · 15 · 22</div><div class="k">tafasitamabe 12 mg/kg IV, semanal nos ciclos 1–3</div></div>
+        <div class="chip" data-passo="3"><div class="v">ciclo 4+</div><div class="k">tafasitamabe a cada 2 semanas; a partir do 13º, sem lenalidomida</div></div>
+      </div>
+
+      <div class="leitura" data-passo="3" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">Hemograma semanal no 1º ciclo: a neutropenia da lenalidomida é o que atrasa a próxima dose.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

@@ -1,0 +1,107 @@
+  <section class="slide" data-nota="COMPONENTE · forest plot com subgrupos (P14 do catalogo). Cada passo revela um subgrupo: o intervalo de confianca se traca e o ponto surge. DIDATICO: os HR sao ilustrativos; para um estudo real, gerar as coordenadas com x = 810 + log2(HR)*175 (escala log2 de 0,25 a 4) e trocar o selo pela citacao.">
+    <div class="stage">
+      <style>
+      /* forest plot: IC se traca (tracar vem do motor) e o ponto surge; um subgrupo por passo */
+      [data-id="modelo-comp-forest"] .fp{position:absolute;left:66px;right:66px;top:240px;bottom:236px}
+      [data-id="modelo-comp-forest"] .fp svg{width:100%;height:100%;display:block;overflow:visible}
+      [data-id="modelo-comp-forest"] .ic{stroke-dasharray:1 1;stroke-dashoffset:1}
+      [data-id="modelo-comp-forest"] [data-passo].on .ic{animation:tracar .7s cubic-bezier(.45,0,.2,1) forwards}
+      [data-id="modelo-comp-forest"] .pt{opacity:0;transform-box:fill-box;transform-origin:center;scale:0;transition:opacity .3s .5s,scale .45s cubic-bezier(.2,1.4,.4,1) .5s}
+      [data-id="modelo-comp-forest"] [data-passo].on .pt{opacity:1;scale:1}
+      html.nofx [data-id="modelo-comp-forest"] .ic,#org [data-id="modelo-comp-forest"] .ic{stroke-dashoffset:0!important;animation:none!important}
+      html.nofx [data-id="modelo-comp-forest"] .pt,#org [data-id="modelo-comp-forest"] .pt{opacity:1!important;scale:1!important;transition:none!important}
+      </style>
+      <div class="topbar"><h1>HR 0,62 no total e abaixo de 1 em todos os subgrupos</h1><span class="tag">Componente · forest</span></div>
+      <div class="sub">Forest plot didático — um subgrupo por passo; o intervalo se traça e o ponto surge</div>
+      <div class="fp">
+        <svg viewBox="0 0 1788 608" preserveAspectRatio="xMidYMid meet" font-family="inherit">
+          <g data-reveal>
+          <line x1="460.0" y1="40" x2="460.0" y2="528" stroke="#e6e7ee" stroke-width="2"/>
+          <text x="460.0" y="564" font-size="19" font-weight="600" fill="#6f6d84" text-anchor="middle">0,25</text>
+          <line x1="635.0" y1="40" x2="635.0" y2="528" stroke="#e6e7ee" stroke-width="2"/>
+          <text x="635.0" y="564" font-size="19" font-weight="600" fill="#6f6d84" text-anchor="middle">0,5</text>
+          <line x1="810.0" y1="40" x2="810.0" y2="528" stroke="#e6e7ee" stroke-width="2"/>
+          <text x="810.0" y="564" font-size="19" font-weight="600" fill="#6f6d84" text-anchor="middle">1</text>
+          <line x1="985.0" y1="40" x2="985.0" y2="528" stroke="#e6e7ee" stroke-width="2"/>
+          <text x="985.0" y="564" font-size="19" font-weight="600" fill="#6f6d84" text-anchor="middle">2</text>
+          <line x1="1160.0" y1="40" x2="1160.0" y2="528" stroke="#e6e7ee" stroke-width="2"/>
+          <text x="1160.0" y="564" font-size="19" font-weight="600" fill="#6f6d84" text-anchor="middle">4</text>
+          <line x1="810.0" y1="40" x2="810.0" y2="528" stroke="#4e4c63" stroke-width="2.5" stroke-dasharray="8 7"/>
+          <text x="810.0" y="594" font-size="19" font-weight="700" fill="#4e4c63" text-anchor="middle">razão de risco (IC 95%) · escala log</text>
+          <text x="635.0" y="26" font-size="17" font-weight="600" fill="#0a545f" text-anchor="middle">← favorece o braço experimental</text>
+          <text x="985.0" y="26" font-size="17" font-weight="600" fill="#8f1d1d" text-anchor="middle">favorece o controle →</text>
+          <text x="1300" y="26" font-size="17" font-weight="700" fill="#4e4c63" text-anchor="start">HR (IC 95%)</text>
+          </g>
+          <g data-passo="1">
+          <text x="20" y="77" font-size="21" font-weight="800" fill="#15122a">Todos os doentes</text>
+          <path class="ic" d="M624.7 70 H753.7" pathLength="1" stroke="#15122a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M624.7 61 v18 M753.7 61 v18" stroke="#15122a" stroke-width="3" stroke-linecap="round"/>
+          <rect class="pt" x="676.3" y="57" width="26" height="26" fill="#15122a"/>
+          <text x="1300" y="77" font-size="20" font-weight="800" fill="#15122a" font-variant-numeric="tabular-nums">0,62 (0,48–0,80)</text>
+          </g>
+          <g data-passo="2">
+          <text x="20" y="129" font-size="21" font-weight="800" fill="#15122a">Idade</text>
+          <text x="250" y="129" font-size="20" font-weight="500" fill="#4e4c63">< 65 anos</text>
+          <path class="ic" d="M584.9 122 H759.9" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M584.9 113 v18 M759.9 113 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="672.5" cy="122" r="10" fill="#58389b"/>
+          <text x="1300" y="129" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,58 (0,41–0,82)</text>
+          </g>
+          <g data-passo="2">
+          <text x="250" y="181" font-size="20" font-weight="500" fill="#4e4c63">≥ 65 anos</text>
+          <path class="ic" d="M624.7 174 H815.0" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M624.7 165 v18 M815.0 165 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="719.9" cy="174" r="10" fill="#58389b"/>
+          <text x="1300" y="181" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,70 (0,48–1,02)</text>
+          </g>
+          <g data-passo="3">
+          <text x="20" y="233" font-size="21" font-weight="800" fill="#15122a">IPI</text>
+          <text x="250" y="233" font-size="20" font-weight="500" fill="#4e4c63">0–2</text>
+          <path class="ic" d="M572.3 226 H747.3" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M572.3 217 v18 M747.3 217 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="659.1" cy="226" r="10" fill="#58389b"/>
+          <text x="1300" y="233" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,55 (0,39–0,78)</text>
+          </g>
+          <g data-passo="3">
+          <text x="250" y="285" font-size="20" font-weight="500" fill="#4e4c63">3–5</text>
+          <path class="ic" d="M644.9 278 H822.3" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M644.9 269 v18 M822.3 269 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="734.0" cy="278" r="10" fill="#58389b"/>
+          <text x="1300" y="285" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,74 (0,52–1,05)</text>
+          </g>
+          <g data-passo="4">
+          <text x="20" y="337" font-size="21" font-weight="800" fill="#15122a">Refratariedade</text>
+          <text x="250" y="337" font-size="20" font-weight="500" fill="#4e4c63">refratário primário</text>
+          <path class="ic" d="M659.1 330 H847.5" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M659.1 321 v18 M847.5 321 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="753.7" cy="330" r="10" fill="#58389b"/>
+          <text x="1300" y="337" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,80 (0,55–1,16)</text>
+          </g>
+          <g data-passo="4">
+          <text x="250" y="389" font-size="20" font-weight="500" fill="#4e4c63">recidiva</text>
+          <path class="ic" d="M552.1 382 H737.4" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M552.1 373 v18 M737.4 373 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="644.9" cy="382" r="10" fill="#58389b"/>
+          <text x="1300" y="389" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,52 (0,36–0,75)</text>
+          </g>
+          <g data-passo="5">
+          <text x="20" y="441" font-size="21" font-weight="800" fill="#15122a">Célula de origem</text>
+          <text x="250" y="441" font-size="20" font-weight="500" fill="#4e4c63">GCB</text>
+          <path class="ic" d="M613.9 434 H797.0" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M613.9 425 v18 M797.0 425 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="705.1" cy="434" r="10" fill="#58389b"/>
+          <text x="1300" y="441" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,66 (0,46–0,95)</text>
+          </g>
+          <g data-passo="5">
+          <text x="250" y="493" font-size="20" font-weight="500" fill="#4e4c63">ABC</text>
+          <path class="ic" d="M584.9 486 H777.7" pathLength="1" stroke="#58389b" stroke-width="4" stroke-linecap="round"/>
+          <path d="M584.9 477 v18 M777.7 477 v18" stroke="#58389b" stroke-width="3" stroke-linecap="round"/>
+          <circle class="pt" cx="681.0" cy="486" r="10" fill="#58389b"/>
+          <text x="1300" y="493" font-size="20" font-weight="600" fill="#15122a" font-variant-numeric="tabular-nums">0,60 (0,41–0,88)</text>
+          </g>
+        </svg>
+      </div>
+      <div class="leitura" data-passo="5" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">Intervalos que cruzam 1 nos subgrupos pequenos: consistência de direção, não prova de efeito em cada um.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

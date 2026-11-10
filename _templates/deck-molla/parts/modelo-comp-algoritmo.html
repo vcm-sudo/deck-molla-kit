@@ -1,0 +1,60 @@
+  <section class="slide" data-nota="COMPONENTE · algoritmo em SVG com setas desenhadas passo a passo. Nos ligados por linhas e setas (nunca caixas soltas); cada nivel entra com um passo; a linha se traca e a ponta da seta surge no fim do traco.">
+    <div class="stage">
+      <style>
+      /* algoritmo: cada nivel e um data-passo; a linha se traca (tracar vem do motor) e a ponta surge depois */
+      [data-id="modelo-comp-algoritmo"] .al{position:absolute;left:66px;right:66px;top:236px;bottom:236px}
+      [data-id="modelo-comp-algoritmo"] .al svg{width:100%;height:100%;display:block;overflow:visible}
+      [data-id="modelo-comp-algoritmo"] .desenha{stroke-dasharray:1 1;stroke-dashoffset:1}
+      [data-id="modelo-comp-algoritmo"] [data-passo].on .desenha{animation:tracar .8s cubic-bezier(.45,0,.2,1) .1s forwards}
+      [data-id="modelo-comp-algoritmo"] .ponta{opacity:0}
+      [data-id="modelo-comp-algoritmo"] [data-passo].on .ponta{animation:surgir .3s .8s forwards}
+      [data-id="modelo-comp-algoritmo"] .no{opacity:0;transform:translateY(10px);transition:opacity .5s .7s,transform .5s .7s}
+      [data-id="modelo-comp-algoritmo"] [data-passo].on .no,[data-id="modelo-comp-algoritmo"] [data-passo="1"].on .no{opacity:1;transform:none}
+      [data-id="modelo-comp-algoritmo"] [data-passo="1"] .no{transition:opacity .5s 0s,transform .5s 0s}
+      html.nofx [data-id="modelo-comp-algoritmo"] .desenha,#org [data-id="modelo-comp-algoritmo"] .desenha{stroke-dashoffset:0!important;animation:none!important}
+      html.nofx [data-id="modelo-comp-algoritmo"] .ponta,#org [data-id="modelo-comp-algoritmo"] .ponta,html.nofx [data-id="modelo-comp-algoritmo"] .no,#org [data-id="modelo-comp-algoritmo"] .no{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
+      </style>
+      <div class="topbar"><h1>Recidiva de LDGCB: a primeira pergunta é a terapia celular</h1><span class="tag">Componente · algoritmo</span></div>
+      <div class="sub">Fluxo de decisão ilustrativo — os nós entram por nível, ligados por setas que se traçam</div>
+
+      <div class="al" data-reveal>
+        <svg viewBox="0 0 1788 570" preserveAspectRatio="xMidYMid meet" font-family="inherit" text-anchor="middle">
+          <!-- nivel 1: a pergunta-raiz -->
+          <g data-passo="1">
+            <g class="no"><rect x="644" y="10" width="500" height="78" rx="14" fill="#15122a"/><text x="894" y="58" font-size="27" font-weight="700" fill="#fff">Candidato a terapia celular?</text></g>
+          </g>
+          <!-- nivel 2: sim / nao -->
+          <g data-passo="2">
+            <path class="desenha" d="M894 88 v40 H480 v60" pathLength="1" fill="none" stroke="#58389b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="ponta" d="M466 176 l14 22 l14 -22 z" fill="#58389b"/>
+            <text x="470" y="118" font-size="21" font-weight="700" fill="#0a545f" text-anchor="end">sim</text>
+            <path class="desenha" d="M894 88 v40 H1308 v60" pathLength="1" fill="none" stroke="#58389b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="ponta" d="M1294 176 l14 22 l14 -22 z" fill="#58389b"/>
+            <text x="1318" y="118" font-size="21" font-weight="700" fill="#8f1d1d" text-anchor="start">não</text>
+            <g class="no"><rect x="230" y="200" width="500" height="78" rx="14" fill="#ebe5f8" stroke="#58389b" stroke-width="2.5"/><text x="480" y="248" font-size="26" font-weight="700" fill="#15122a">Recidiva ≤ 12 meses do R-CHOP?</text></g>
+            <g class="no"><rect x="1058" y="200" width="500" height="78" rx="14" fill="#ebe5f8" stroke="#58389b" stroke-width="2.5"/><text x="1308" y="248" font-size="26" font-weight="700" fill="#15122a">Inelegível: idade, comorbidade, acesso</text></g>
+          </g>
+          <!-- nivel 3: desfechos do ramo "sim" -->
+          <g data-passo="3">
+            <path class="desenha" d="M480 278 v40 H250 v60" pathLength="1" fill="none" stroke="#58389b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="ponta" d="M236 366 l14 22 l14 -22 z" fill="#58389b"/>
+            <text x="240" y="308" font-size="21" font-weight="700" fill="#0a545f" text-anchor="end">sim</text>
+            <path class="desenha" d="M480 278 v40 H720 v60" pathLength="1" fill="none" stroke="#58389b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path class="ponta" d="M706 366 l14 22 l14 -22 z" fill="#58389b"/>
+            <text x="730" y="308" font-size="21" font-weight="700" fill="#8f1d1d" text-anchor="start">não</text>
+            <g class="no"><rect x="40" y="390" width="420" height="120" rx="14" fill="#e0efe7" stroke="#0a545f" stroke-width="2.5"/><text x="250" y="436" font-size="26" font-weight="800" fill="#0a545f">CAR-T em 2ª linha</text><text x="250" y="478" font-size="21" font-weight="500" fill="#0a545f">axi-cel · liso-cel</text></g>
+            <g class="no"><rect x="490" y="390" width="460" height="120" rx="14" fill="#fff" stroke="#58389b" stroke-width="2.5"/><text x="720" y="436" font-size="26" font-weight="800" fill="#15122a">Resgate com platina</text><text x="720" y="478" font-size="20" font-weight="500" fill="#4e4c63">R-ICE / R-GemOx → auto-TCTH se sensível</text></g>
+          </g>
+          <!-- nivel 4: desfecho do ramo "nao" -->
+          <g data-passo="4">
+            <path class="desenha" d="M1308 278 v112" pathLength="1" fill="none" stroke="#58389b" stroke-width="5" stroke-linecap="round"/>
+            <path class="ponta" d="M1294 366 l14 22 l14 -22 z" fill="#58389b"/>
+            <g class="no"><rect x="980" y="390" width="656" height="120" rx="14" fill="#fff" stroke="#58389b" stroke-width="2.5"/><text x="1308" y="436" font-size="26" font-weight="800" fill="#15122a">Sem terapia celular</text><text x="1308" y="478" font-size="21" font-weight="500" fill="#4e4c63">pola-R-GemOx · glofitamabe-GemOx · tafa-lena</text></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="leitura" data-passo="4" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">Duas perguntas ordenam a 2ª linha: elegibilidade à terapia celular e tempo desde o R-CHOP.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

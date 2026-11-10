@@ -1,0 +1,46 @@
+  <section class="slide" data-nota="COMPONENTE · swimmer plot DIDATICO (reconstruido, nao e figura de artigo — o selo Didatico e obrigatorio). Uma barra por doente: cresce ate a duracao da resposta; triangulo = resposta em curso; ponto = progressao. Os doentes entram em tres grupos, um por passo.">
+    <div class="stage">
+      <style>
+      /* swimmer: barras que crescem da esquerda; --d = duracao em % do eixo; .rc/.rp = cor; .curso = seta no fim */
+      [data-id="modelo-comp-swimmer"] .sw{position:absolute;left:66px;right:66px;top:250px;bottom:236px;display:grid;grid-template-columns:150px 1fr;grid-template-rows:repeat(10,1fr) 36px;column-gap:16px;row-gap:5px}
+      [data-id="modelo-comp-swimmer"] .sw .lb{display:flex;align-items:center;font-family:var(--font-ut);font-size:18px;font-weight:600;color:var(--muted)}
+      [data-id="modelo-comp-swimmer"] .sw .lb b{color:var(--tinta);margin-right:8px}
+      [data-id="modelo-comp-swimmer"] .sw .tr{position:relative;background:repeating-linear-gradient(90deg,transparent 0 calc(100%/6 - 1.5px),var(--linha) calc(100%/6 - 1.5px) calc(100%/6));border-radius:4px}
+      [data-id="modelo-comp-swimmer"] .sw .bar{position:absolute;left:0;top:20%;height:60%;width:var(--d);border-radius:0 6px 6px 0;background:var(--violeta);transform:scaleX(0);transform-origin:left center;transition:transform 1s cubic-bezier(.3,0,.2,1)}
+      [data-id="modelo-comp-swimmer"] .sw .bar.rp{background:#8f6fd6}
+      [data-id="modelo-comp-swimmer"] .sw .bar.dp{background:#c9483f}
+      [data-id="modelo-comp-swimmer"] .sw .fim{position:absolute;left:var(--d);top:50%;transform:translate(-2px,-50%);scale:0;transition:scale .4s cubic-bezier(.2,1.4,.4,1) 1s}
+      [data-id="modelo-comp-swimmer"] .sw .fim.curso{width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:20px solid var(--good);margin-left:4px}
+      [data-id="modelo-comp-swimmer"] .sw .fim.prog{width:22px;height:22px;border-radius:50%;background:#c9483f;border:3px solid #fff;box-shadow:0 0 0 2px #c9483f}
+      [data-id="modelo-comp-swimmer"] .sw .on .bar{transform:none}
+      [data-id="modelo-comp-swimmer"] .sw .on .fim{scale:1}
+      [data-id="modelo-comp-swimmer"] .sw .eixo{grid-column:2;position:relative;border-top:2.5px solid var(--linha-forte)}
+      [data-id="modelo-comp-swimmer"] .sw .eixo span{position:absolute;top:6px;transform:translateX(-50%);font-family:var(--font-ut);font-size:16px;font-weight:600;color:var(--muted)}
+      [data-id="modelo-comp-swimmer"] .leg{position:absolute;left:232px;top:214px;display:flex;gap:26px;font-size:17px;font-weight:600;color:var(--ink)}
+      [data-id="modelo-comp-swimmer"] .leg span{display:inline-flex;align-items:center;gap:8px}
+      [data-id="modelo-comp-swimmer"] .leg i{display:inline-block;width:30px;height:12px;border-radius:3px}
+      html.nofx [data-id="modelo-comp-swimmer"] .bar,#org [data-id="modelo-comp-swimmer"] .bar{transform:none!important;transition:none!important}
+      html.nofx [data-id="modelo-comp-swimmer"] .fim,#org [data-id="modelo-comp-swimmer"] .fim{scale:1!important;transition:none!important}
+      </style>
+      <div class="topbar"><h1>Duração da resposta doente a doente: 6 de 10 seguem em resposta</h1><span class="tag">Componente · swimmer</span></div>
+      <div class="sub">Reconstrução didática — uma barra por doente; triângulo = resposta em curso, ponto = progressão</div>
+      <div class="leg" data-reveal><span><i style="background:var(--violeta)"></i>resposta completa</span><span><i style="background:#8f6fd6"></i>resposta parcial</span><span><i style="background:#c9483f"></i>doença progressiva</span></div>
+
+      <div class="sw">
+        <div class="lb" data-passo="1"><b>01</b>RC</div><div class="tr" data-passo="1"><div class="bar" style="--d:96%"></div><div class="fim curso" style="--d:96%"></div></div>
+        <div class="lb" data-passo="1"><b>02</b>RC</div><div class="tr" data-passo="1"><div class="bar" style="--d:88%"></div><div class="fim curso" style="--d:88%"></div></div>
+        <div class="lb" data-passo="1"><b>03</b>RC</div><div class="tr" data-passo="1"><div class="bar" style="--d:74%"></div><div class="fim curso" style="--d:74%"></div></div>
+        <div class="lb" data-passo="1"><b>04</b>RC</div><div class="tr" data-passo="1"><div class="bar" style="--d:52%"></div><div class="fim prog" style="--d:52%"></div></div>
+        <div class="lb" data-passo="2"><b>05</b>RP</div><div class="tr" data-passo="2"><div class="bar rp" style="--d:66%"></div><div class="fim curso" style="--d:66%"></div></div>
+        <div class="lb" data-passo="2"><b>06</b>RP</div><div class="tr" data-passo="2"><div class="bar rp" style="--d:44%"></div><div class="fim curso" style="--d:44%"></div></div>
+        <div class="lb" data-passo="2"><b>07</b>RP</div><div class="tr" data-passo="2"><div class="bar rp" style="--d:30%"></div><div class="fim prog" style="--d:30%"></div></div>
+        <div class="lb" data-passo="2"><b>08</b>RP</div><div class="tr" data-passo="2"><div class="bar rp" style="--d:22%"></div><div class="fim curso" style="--d:22%"></div></div>
+        <div class="lb" data-passo="3"><b>09</b>DP</div><div class="tr" data-passo="3"><div class="bar dp" style="--d:12%"></div><div class="fim prog" style="--d:12%"></div></div>
+        <div class="lb" data-passo="3"><b>10</b>DP</div><div class="tr" data-passo="3"><div class="bar dp" style="--d:8%"></div><div class="fim prog" style="--d:8%"></div></div>
+        <div class="eixo" data-reveal><span style="left:0">0</span><span style="left:16.7%">6</span><span style="left:33.3%">12</span><span style="left:50%">18</span><span style="left:66.7%">24</span><span style="left:83.3%">30</span><span style="left:100%">36 meses</span></div>
+      </div>
+
+      <div class="leitura" data-passo="3" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">A figura do artigo é a que vai ao palco; a reconstrução só serve para explicar como se lê o swimmer.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

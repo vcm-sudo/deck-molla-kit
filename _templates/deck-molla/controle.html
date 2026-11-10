@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Controle da aula</title>
+<style>
+:root{--navy:#010f40;--cyan:#3fb9d6;--gold:#f4a23b;--muted:#8d99b5}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:#070b16;color:#fff;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;
+  padding:14px 14px calc(14px + env(safe-area-inset-bottom));max-width:620px;margin:0 auto;
+  display:flex;flex-direction:column;gap:12px;min-height:100svh;overscroll-behavior:none}
+.topo{display:flex;align-items:baseline;gap:12px;font-size:14px;color:var(--muted)}
+.topo .lam{font-weight:800;color:var(--cyan)}
+.topo .lat{margin-left:auto;font-variant-numeric:tabular-nums}
+.atual{background:#fff;color:var(--navy);border-radius:14px;padding:14px;font-size:17px;font-weight:850;line-height:1.22}
+h5{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin:2px 0 -4px}
+.fala{background:rgba(244,162,59,.14);border-left:5px solid var(--gold);border-radius:6px 14px 14px 6px;
+  padding:14px 16px;font-size:22px;line-height:1.38;font-weight:600;flex:1;overflow:auto;min-height:96px}
+.fala ul{list-style:none;margin:0;padding:0}
+.fala li{padding:7px 0 7px 20px;position:relative;border-bottom:1px solid rgba(244,162,59,.18)}
+.fala li:last-child{border-bottom:none}
+.fala li:before{content:"";position:absolute;left:2px;top:.72em;width:8px;height:8px;border-radius:2px;background:var(--gold)}
+.pad{flex:1.4;min-height:150px;border-radius:16px;border:2px dashed rgba(63,185,214,.5);
+  background:rgba(63,185,214,.07);display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:13px;touch-action:none;user-select:none}
+.pad.ativo{border-style:solid;border-color:var(--gold);background:rgba(244,162,59,.14);color:var(--gold)}
+.bt{display:flex;gap:10px}
+.bt button{flex:1;height:76px;border:none;border-radius:16px;background:rgba(255,255,255,.1);color:#fff;
+  font-size:34px;font-weight:800;touch-action:manipulation}
+.bt button:active{background:rgba(63,185,214,.4)}
+.aviso{font-size:12px;color:var(--muted);text-align:center}
+.ctl2{display:flex;gap:10px;margin-top:10px}
+.ctl2 button{flex:1;padding:12px 6px;font-size:16px;font-weight:800;border-radius:12px;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ctl2 button.arm{background:rgba(174,51,45,.85);border-color:#e08e8a}
+.ctl2 button.ok{background:rgba(31,122,86,.85);border-color:#4fb7cc}
+</style>
+</head>
+<body>
+<div class="topo"><span class="lam" id="lam">— / —</span><span id="bloco"></span><span class="lat" id="lat"></span></div>
+<div class="atual" id="atual">aguardando…</div>
+<h5>O que dizer</h5>
+<div class="fala" id="fala">—</div>
+<div class="pad" id="pad">arraste aqui para apontar no telão</div>
+<div class="bt">
+  <button id="bprev" aria-label="Anterior">‹</button>
+  <button id="bnext" aria-label="Próxima">›</button>
+  </div>
+  <div class="ctl2">
+    <button id="brev">R · revelar</button>
+    <button id="bperg">P · perguntas</button>
+    <button id="bzer">Z · zerar</button>
+</div>
+<div class="aviso" id="aviso">rede local · toque e arraste para o ponteiro</div>
+
+<script>
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let FALAS={}, TOPICOS={}, LAMS=[];
+fetch("segunda-tela/falas.json").then(r=>r.json()).then(d=>FALAS=d).catch(()=>{});
+fetch("segunda-tela/topicos.json").then(r=>r.ok?r.json():{}).then(d=>TOPICOS=d||{}).catch(()=>{});
+fetch("segunda-tela/slides.json").then(r=>r.json()).then(d=>LAMS=(d&&d.slides)||[]).catch(()=>{});
+
+const post=c=>fetch("/ctrl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(c)});
+const vib=ms=>{try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}};
+
+/* mede o tempo de ida e volta ate o Mac: e o numero que diz se o controle esta bom */
+async function passar(cmd){
+  vib(10); const t=performance.now();
+  try{ await post({cmd}); document.getElementById("lat").textContent=Math.round(performance.now()-t)+" ms"; }catch(e){}
+}
+document.getElementById("bnext").addEventListener("click",()=>passar("next"));
+document.getElementById("bprev").addEventListener("click",()=>passar("prev"));
+  document.getElementById("brev").addEventListener("click",()=>post({cmd:"revelar"}));
+  document.getElementById("bperg").addEventListener("click",()=>post({cmd:"perguntas"}));
+  const bz=document.getElementById("bzer"); let armado=null;
+  bz.addEventListener("click",()=>{ if(!armado){ armado=setTimeout(()=>{armado=null;bz.classList.remove("arm");bz.textContent="Z · zerar";},3000); bz.classList.add("arm"); bz.textContent="toque de novo para zerar"; return; }
+    clearTimeout(armado); armado=null; bz.classList.remove("arm"); bz.classList.add("ok"); bz.textContent="zerado"; post({cmd:"zerar"}); setTimeout(()=>{bz.classList.remove("ok");bz.textContent="Z · zerar";},2500); });
+
+/* ponteiro: o dedo anda aqui, o halo anda no telao */
+const pad=document.getElementById("pad");
+let enviando=null,pendente=null,ultimo=0,geracao=0;
+function mandar(x,y,on){
+  const g=geracao;
+  pendente={ptr:{x,y,on}};
+  const agora=Date.now();
+  if(enviando||agora-ultimo<30) return;
+  if(g!==geracao) return;         // na rede local da para 30 ms
+  ultimo=agora; const c=pendente; pendente=null;
+  enviando=post(c).catch(()=>{}).finally(()=>{enviando=null;
+    if(pendente && g===geracao){const p=pendente;pendente=null;ultimo=Date.now();post(p).catch(()=>{});}});
+}
+const rel=ev=>{const r=pad.getBoundingClientRect();const t=(ev.touches&&ev.touches[0])||ev;
+  return [Math.min(1,Math.max(0,(t.clientX-r.left)/r.width)),Math.min(1,Math.max(0,(t.clientY-r.top)/r.height))];};
+let apontando=false, ultimoToque=0;
+const ini=ev=>{apontando=true;ultimoToque=Date.now();pad.classList.add("ativo");vib(8);const[x,y]=rel(ev);mandar(x,y,true);ev.preventDefault();};
+const mov=ev=>{if(!apontando)return;ultimoToque=Date.now();const[x,y]=rel(ev);mandar(x,y,true);ev.preventDefault();};
+const fim=()=>{if(!apontando)return;apontando=false;geracao++;pendente=null;pad.classList.remove("ativo");post({ptr:{on:false}}).catch(()=>{});};
+pad.addEventListener("touchstart",ini,{passive:false});
+pad.addEventListener("touchmove",mov,{passive:false});
+pad.addEventListener("touchend",fim); pad.addEventListener("touchcancel",fim);
+pad.addEventListener("pointerdown",ini); pad.addEventListener("pointermove",mov);
+addEventListener("pointerup",fim);
+addEventListener("blur",fim); document.addEventListener("visibilitychange",()=>{if(document.hidden)fim();});
+/* trava de seguranca: se o dedo sair sem disparar o fim (acontece no iOS ao
+   receber notificacao), o halo nao pode ficar aceso no telao */
+/* trava de seguranca: dedo parado ou evento de soltar perdido (acontece no iOS
+   ao chegar notificacao) nao pode deixar o halo aceso no telao */
+setInterval(()=>{
+  if(pad.classList.contains("ativo") && Date.now()-ultimoToque > 2500) fim();
+},900);
+
+/* onde o deck esta: le do app da segunda tela, que o deck publica */
+const P=new URLSearchParams(location.search);
+const APP=P.get("app")||"https://AULAID-segunda-tela.vercel.app";
+const SES=P.get("s")||"AULAID";
+async function ciclo(){
+  try{
+    const s=await (await fetch(APP+"/api/state?session="+encodeURIComponent(SES),{cache:"no-store"})).json();
+    if(s.titulo) document.getElementById("atual").textContent=s.titulo;
+    document.getElementById("lam").textContent=(s.n&&s.total)?(s.n+" / "+s.total):"— / —";
+    document.getElementById("bloco").textContent=s.bloco||"";
+    const cx=document.getElementById("fala");
+    const tp=s.id&&TOPICOS[s.id];
+    if(tp&&tp.length) cx.innerHTML="<ul>"+tp.map(t=>"<li>"+esc(t)+"</li>").join("")+"</ul>";
+    else cx.textContent=(s.id&&FALAS[s.id])||"—";
+  }catch(e){}
+  setTimeout(ciclo,2000);
+}
+ciclo();
+</script>
+</body>
+</html>

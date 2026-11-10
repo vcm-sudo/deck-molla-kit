@@ -1,0 +1,45 @@
+  <section class="slide" data-nota="COMPONENTE · ajuste de dose por faixa (aqui lenalidomida por clearance de creatinina). As faixas entram uma por passo; o ultimo passo desliza o marcador do 'seu doente' ate a faixa dele. Os valores sao da bula e devem ser conferidos antes de ir ao palco — trocar o selo Didatico pela citacao da bula/artigo.">
+    <div class="stage">
+      <style>
+      /* faixas de dose: uma coluna por faixa, entram por passo; o marcador desliza (left) ate a faixa do doente */
+      [data-id="modelo-comp-dose"] .dz{position:absolute;left:66px;right:66px;top:250px;bottom:236px}
+      [data-id="modelo-comp-dose"] .fx{position:absolute;left:0;right:0;top:120px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+      [data-id="modelo-comp-dose"] .fa{background:var(--papel);border:1.5px solid var(--linha);border-top:8px solid var(--linha-forte);border-radius:14px;padding:22px 24px 24px;min-height:300px;display:flex;flex-direction:column}
+      [data-id="modelo-comp-dose"] .fa.ok{border-top-color:var(--good)}
+      [data-id="modelo-comp-dose"] .fa.aj{border-top-color:#95650a}
+      [data-id="modelo-comp-dose"] .fa.al{border-top-color:#c9483f}
+      [data-id="modelo-comp-dose"] .fa .cl{font-family:var(--font-ut);font-size:17px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+      [data-id="modelo-comp-dose"] .fa .cl b{display:block;font-size:30px;letter-spacing:0;color:var(--tinta);margin-top:4px;font-family:Archivo,"Helvetica Neue",Arial,sans-serif;text-transform:none}
+      [data-id="modelo-comp-dose"] .fa .dose{font-size:64px;font-weight:800;color:var(--tinta);line-height:1;margin:22px 0 6px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+      [data-id="modelo-comp-dose"] .fa .dose small{font-size:24px;font-weight:700;color:var(--muted);margin-left:6px;letter-spacing:0}
+      [data-id="modelo-comp-dose"] .fa .como{font-size:20px;line-height:1.35;color:var(--ink);margin-top:auto}
+      /* o eixo de clearance e o marcador do doente */
+      [data-id="modelo-comp-dose"] .eixo{position:absolute;left:0;right:0;top:40px;height:10px;background:linear-gradient(90deg,#c9483f 0 25%,#95650a 25% 50%,#95650a 50% 75%,var(--good) 75%);border-radius:5px;opacity:.55}
+      [data-id="modelo-comp-dose"] .tick{position:absolute;top:58px;transform:translateX(-50%);font-family:var(--font-ut);font-size:17px;font-weight:600;color:var(--muted)}
+      [data-id="modelo-comp-dose"] .pac{position:absolute;top:-4px;left:12.5%;transform:translateX(-50%);width:0;height:0;transition:left 1.2s cubic-bezier(.3,0,.2,1)}
+      [data-id="modelo-comp-dose"] .pac i{position:absolute;left:-14px;top:-30px;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:22px solid var(--violeta)}
+      [data-id="modelo-comp-dose"] .pac b{position:absolute;left:0;top:-70px;transform:translateX(-50%);white-space:nowrap;font-size:20px;font-weight:800;color:var(--violeta)}
+      [data-id="modelo-comp-dose"] [data-passo="5"].on ~ .dz .pac{left:87.5%}
+      [data-id="modelo-comp-dose"] [data-passo="5"].on ~ .dz .fa.ok{background:#e0efe7;box-shadow:0 0 0 4px rgba(15,111,122,.18)}
+      html.nofx [data-id="modelo-comp-dose"] .pac,#org [data-id="modelo-comp-dose"] .pac{left:87.5%!important;transition:none!important}
+      </style>
+      <div class="topbar"><h1>Lenalidomida: 25 mg só com clearance ≥ 60 mL/min</h1><span class="tag">Componente · dose</span></div>
+      <div class="sub">Faixas de ajuste ilustrativas (bula) — cada seta abre uma faixa; a última leva o marcador até o doente</div>
+
+      <div data-passo="5"></div>
+      <div class="dz">
+        <div class="eixo" data-reveal></div>
+        <div class="tick" data-reveal style="left:0">0</div><div class="tick" data-reveal style="left:25%">30</div><div class="tick" data-reveal style="left:50%">60</div><div class="tick" data-reveal style="left:75%">90</div><div class="tick" data-reveal style="left:100%">mL/min</div>
+        <div class="pac" data-reveal><i></i><b>ClCr 89 · seu doente</b></div>
+        <div class="fx">
+          <div class="fa al" data-passo="4"><div class="cl">Diálise<b>qualquer ClCr</b></div><div class="dose">5<small>mg</small></div><div class="como">uma vez ao dia, <b>após</b> a sessão de diálise</div></div>
+          <div class="fa al" data-passo="3"><div class="cl">ClCr &lt; 30<b>sem diálise</b></div><div class="dose">15<small>mg</small></div><div class="como">em <b>dias alternados</b></div></div>
+          <div class="fa aj" data-passo="2"><div class="cl">ClCr 30–59<b>moderada</b></div><div class="dose">10<small>mg</small></div><div class="como">uma vez ao dia, D1–D21</div></div>
+          <div class="fa ok" data-passo="1"><div class="cl">ClCr ≥ 60<b>dose plena</b></div><div class="dose">25<small>mg</small></div><div class="como">uma vez ao dia, D1–D21 do ciclo de 28</div></div>
+        </div>
+      </div>
+
+      <div class="leitura" data-passo="5" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">Clearance estimado antes do 1º ciclo e a cada ciclo: a dose muda de faixa antes de a creatinina subir.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

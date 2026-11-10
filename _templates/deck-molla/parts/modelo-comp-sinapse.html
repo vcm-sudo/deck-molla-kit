@@ -1,0 +1,81 @@
+  <section class="slide" data-nota="COMPONENTE · mecanismo em SVG com passos: a celula CAR-T se aproxima, liga o CD19, libera granulos e a celula-alvo se desfaz. Os marcadores vazios data-passo=2..4 no inicio do SVG comandam, por seletor de irmao (~), o que muda em cada passo.">
+    <div class="stage">
+      <style>
+      /* sinapse imunologica: grupos do SVG movidos por CSS; os <g data-passo> vazios sao os gatilhos */
+      [data-id="modelo-comp-sinapse"] .cs{position:absolute;left:66px;width:1240px;top:250px;bottom:236px}
+      [data-id="modelo-comp-sinapse"] .cs svg{width:100%;height:100%;display:block;overflow:visible}
+      [data-id="modelo-comp-sinapse"] .col{position:absolute;left:1346px;right:66px;top:250px;bottom:236px;display:flex;flex-direction:column;gap:16px;justify-content:center}
+      [data-id="modelo-comp-sinapse"] .col .chip .v{font-size:30px}
+      [data-id="modelo-comp-sinapse"] .tcell{transition:transform 1.1s cubic-bezier(.3,0,.2,1)}
+      [data-id="modelo-comp-sinapse"] [data-passo="2"].on ~ .tcell{transform:translateX(300px)}
+      [data-id="modelo-comp-sinapse"] .liga{opacity:0;transition:opacity .5s .9s}
+      [data-id="modelo-comp-sinapse"] [data-passo="2"].on ~ .liga{opacity:1}
+      [data-id="modelo-comp-sinapse"] .gran{opacity:0}
+      [data-id="modelo-comp-sinapse"] [data-passo="3"].on ~ .tcell .gran{animation:cs-gran 1.4s cubic-bezier(.4,0,.2,1) forwards}
+      [data-id="modelo-comp-sinapse"] [data-passo="3"].on ~ .tcell .gran:nth-child(2){animation-delay:.25s}
+      [data-id="modelo-comp-sinapse"] [data-passo="3"].on ~ .tcell .gran:nth-child(3){animation-delay:.5s}
+      @keyframes cs-gran{0%{opacity:0;transform:translateX(0)}20%{opacity:1}100%{opacity:0;transform:translateX(270px)}}
+      [data-id="modelo-comp-sinapse"] .tumor .corpo{transition:opacity .9s,stroke-dasharray .9s}
+      [data-id="modelo-comp-sinapse"] [data-passo="4"].on ~ .tumor .corpo{opacity:.35;stroke-dasharray:14 12}
+      [data-id="modelo-comp-sinapse"] .tumor .frag{opacity:0;transition:opacity .7s .5s,transform .9s .5s}
+      [data-id="modelo-comp-sinapse"] [data-passo="4"].on ~ .tumor .frag{opacity:1;transform:translate(var(--dx),var(--dy))}
+      html.nofx [data-id="modelo-comp-sinapse"] .tcell,#org [data-id="modelo-comp-sinapse"] .tcell{transform:translateX(300px)!important;transition:none!important}
+      html.nofx [data-id="modelo-comp-sinapse"] .liga,#org [data-id="modelo-comp-sinapse"] .liga{opacity:1!important}
+      html.nofx [data-id="modelo-comp-sinapse"] .gran,#org [data-id="modelo-comp-sinapse"] .gran{animation:none!important;opacity:0!important}
+      </style>
+      <div class="topbar"><h1>CAR anti-CD19: reconhecimento sem HLA, lise por perforina e granzima</h1><span class="tag">Componente · mecanismo</span></div>
+      <div class="sub">Esquema didático em quatro passos — aproximação, ligação ao CD19, degranulação e lise da célula B</div>
+
+      <div class="cs" data-reveal>
+        <svg viewBox="0 0 1240 560" preserveAspectRatio="xMidYMid meet" font-family="inherit">
+          <defs>
+            <radialGradient id="cs-t" cx="38%" cy="32%"><stop offset="0%" stop-color="#f4effd"/><stop offset="100%" stop-color="#c9b6ee"/></radialGradient>
+            <radialGradient id="cs-b" cx="38%" cy="32%"><stop offset="0%" stop-color="#eef2f7"/><stop offset="100%" stop-color="#b9c3d6"/></radialGradient>
+          </defs>
+          <!-- gatilhos dos passos 2, 3 e 4 (vazios): ficam ANTES dos grupos que comandam -->
+          <g data-passo="2"></g><g data-passo="3"></g><g data-passo="4"></g>
+
+          <!-- celula B alvo, com CD19 voltado para a esquerda -->
+          <g class="tumor" data-passo="1">
+            <circle class="corpo" cx="960" cy="280" r="170" fill="url(#cs-b)" stroke="#5f6f95" stroke-width="4"/>
+            <circle cx="1000" cy="260" r="72" fill="#3b4a72" opacity=".9"/>
+            <path d="M790 280 h-52" stroke="#c9483f" stroke-width="10" stroke-linecap="round"/>
+            <rect x="718" y="262" width="22" height="36" rx="5" fill="#c9483f"/>
+            <text x="742" y="352" font-size="22" font-weight="700" fill="#c9483f" text-anchor="middle">CD19</text>
+            <text x="960" y="470" font-size="24" font-weight="700" fill="#3b4a72" text-anchor="middle">célula B do linfoma</text>
+            <circle class="frag" cx="900" cy="150" r="16" fill="#b9c3d6" style="--dx:-40px;--dy:-60px"/>
+            <circle class="frag" cx="1110" cy="200" r="13" fill="#b9c3d6" style="--dx:70px;--dy:-40px"/>
+            <circle class="frag" cx="1090" cy="400" r="18" fill="#b9c3d6" style="--dx:60px;--dy:70px"/>
+            <circle class="frag" cx="880" cy="410" r="12" fill="#b9c3d6" style="--dx:-50px;--dy:60px"/>
+          </g>
+
+          <!-- ponto de ligacao (aparece no passo 2) -->
+          <g class="liga"><ellipse cx="714" cy="280" rx="26" ry="70" fill="#b79bee" opacity=".55"/></g>
+
+          <!-- celula CAR-T: se desloca 300 px para a direita no passo 2 -->
+          <g class="tcell" data-passo="1">
+            <circle cx="270" cy="280" r="150" fill="url(#cs-t)" stroke="#58389b" stroke-width="4"/>
+            <circle cx="240" cy="270" r="62" fill="#58389b" opacity=".85"/>
+            <text x="270" y="470" font-size="24" font-weight="700" fill="#58389b" text-anchor="middle">linfócito T com CAR</text>
+            <!-- o receptor quimerico: haste e dois bracos (scFv) -->
+            <path d="M420 280 h34" stroke="#58389b" stroke-width="10" stroke-linecap="round"/>
+            <path d="M454 280 l28 -22 M454 280 l28 22" stroke="#58389b" stroke-width="10" stroke-linecap="round" fill="none"/>
+            <text x="452" y="222" font-size="22" font-weight="700" fill="#58389b" text-anchor="middle">CAR</text>
+            <!-- granulos liticos (passo 3) -->
+            <circle class="gran" cx="352" cy="236" r="13" fill="#e0a53a" stroke="#fff3d6" stroke-width="3"/>
+            <circle class="gran" cx="362" cy="282" r="12" fill="#e0a53a" stroke="#fff3d6" stroke-width="3"/>
+            <circle class="gran" cx="350" cy="326" r="13" fill="#e0a53a" stroke="#fff3d6" stroke-width="3"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="col">
+        <div class="chip" data-passo="2"><div class="v">scFv → CD19</div><div class="k">reconhecimento direto do antígeno, independente de HLA</div></div>
+        <div class="chip" data-passo="3"><div class="v">CD3ζ + 4-1BB / CD28</div><div class="k">sinal de ativação e coestímulo: degranulação de perforina e granzima</div></div>
+        <div class="chip" data-passo="4"><div class="v">lise · citocinas</div><div class="k">IL-6 e IFN-γ liberados na ativação — a base da SLC</div></div>
+      </div>
+
+      <div class="leitura" data-passo="4" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">Perda ou mascaramento do CD19 é o mecanismo de escape: por isso a rebiópsia antes da infusão.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

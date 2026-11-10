@@ -1,0 +1,32 @@
+  <section class="slide" data-nota="COMPONENTE · funil de atrito. Cada passo (seta) revela uma etapa: a barra cresce e o numero aparece. Trocar os numeros pelos da coorte, o selo Didatico pelo do artigo e a leitura pelo achado real.">
+    <div class="stage">
+      <style>
+      /* funil de atrito: barras que encolhem etapa a etapa, uma por passo */
+      [data-id="modelo-comp-funil"] .cf{position:absolute;left:66px;right:66px;top:250px;bottom:236px;display:flex;flex-direction:column;justify-content:space-between}
+      [data-id="modelo-comp-funil"] .cf .row{display:grid;grid-template-columns:360px 1fr 210px;align-items:center;gap:26px}
+      [data-id="modelo-comp-funil"] .cf .lb{font-size:25px;font-weight:700;color:var(--tinta);line-height:1.2}
+      [data-id="modelo-comp-funil"] .cf .lb small{display:block;font-size:17px;font-weight:500;color:var(--muted);margin-top:3px}
+      [data-id="modelo-comp-funil"] .cf .track{height:56px;background:var(--violeta-tint);border-radius:6px;overflow:hidden}
+      [data-id="modelo-comp-funil"] .cf .fill{height:100%;width:0;background:var(--violeta);border-radius:6px;transition:width 1.1s cubic-bezier(.3,0,.2,1) .25s}
+      [data-id="modelo-comp-funil"] .cf .row.on .fill{width:var(--w)}
+      [data-id="modelo-comp-funil"] .cf .row.fim .fill{background:var(--good)}
+      [data-id="modelo-comp-funil"] .cf .n{font-size:42px;font-weight:800;color:var(--tinta);font-variant-numeric:tabular-nums;text-align:right;line-height:1}
+      [data-id="modelo-comp-funil"] .cf .n small{display:block;font-size:16px;font-weight:600;color:var(--bad);margin-top:5px;letter-spacing:.02em}
+      [data-id="modelo-comp-funil"] .cf .row.fim .n small{color:var(--good)}
+      html.nofx [data-id="modelo-comp-funil"] .fill,#org [data-id="modelo-comp-funil"] .fill{width:var(--w)!important;transition:none!important}
+      </style>
+      <div class="topbar"><h1>Do encaminhamento à infusão: 55 de 100 recebem o CAR-T</h1><span class="tag">Componente · funil</span></div>
+      <div class="sub">Números ilustrativos — trocar pelos da coorte citada no rodapé; a perda de cada etapa aparece em vermelho</div>
+
+      <div class="cf">
+        <div class="row" data-passo="1" style="--w:100%"><div class="lb">Encaminhados<small>primeira consulta no centro de terapia celular</small></div><div class="track"><div class="fill"></div></div><div class="n">100</div></div>
+        <div class="row" data-passo="2" style="--w:78%"><div class="lb">Elegíveis<small>critérios clínicos e de doença</small></div><div class="track"><div class="fill"></div></div><div class="n">78<small>−22 · inelegíveis</small></div></div>
+        <div class="row" data-passo="3" style="--w:64%"><div class="lb">Aférese realizada<small>autorização e coleta</small></div><div class="track"><div class="fill"></div></div><div class="n">64<small>−14 · progressão ou recusa</small></div></div>
+        <div class="row" data-passo="4" style="--w:55%"><div class="lb">Infundidos<small>produto liberado e paciente apto</small></div><div class="track"><div class="fill"></div></div><div class="n">55<small>−9 · falha de fabricação ou piora</small></div></div>
+        <div class="row fim" data-passo="5" style="--w:30%"><div class="lb">Em resposta em 1 ano<small>resposta completa mantida</small></div><div class="track"><div class="fill"></div></div><div class="n">30<small>30% dos encaminhados</small></div></div>
+      </div>
+
+      <div class="leitura" data-passo="5" style="left:56px;right:56px;top:auto;bottom:96px"><div class="t">Quase metade se perde antes da infusão; a maior perda fica entre a elegibilidade e a aférese.</div></div>
+      <footer class="fonte"><span class="badge-did">Didático</span><span class="txt">Slide do autor</span></footer>
+    </div>
+  </section>

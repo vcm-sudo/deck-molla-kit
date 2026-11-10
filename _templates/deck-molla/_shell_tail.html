@@ -1,0 +1,2069 @@
+</div>
+
+<!-- ===== ORGANIZADOR DE SLIDES (tecla O) ===== -->
+<style>
+#orgbtn{position:fixed;left:22px;bottom:16px;z-index:50;color:#fff;background:rgba(1,15,64,.55);
+  backdrop-filter:blur(6px);padding:7px 14px;border-radius:999px;font-size:14px;font-weight:700;
+  letter-spacing:.04em;opacity:0;cursor:pointer;border:none;font-family:inherit;transition:opacity .2s}
+#orgbtn:hover{opacity:1}
+#org{position:fixed;inset:0;z-index:100;background:#0a0e1a;display:none;flex-direction:column}
+#org.open{display:flex}
+#orgbar{flex:none;display:flex;align-items:center;gap:14px;padding:16px 26px;background:#010f40;
+  border-bottom:1px solid rgba(255,255,255,.12);color:#fff}
+#orgbar h2{font-size:22px;font-weight:800;letter-spacing:-.01em}
+#orgbar .dica{font-size:14px;color:#9fc6dd;font-weight:600;margin-left:6px}
+#orgbar .sp{margin-left:auto;display:flex;gap:10px}
+#orgbar button{font-family:inherit;font-size:14px;font-weight:700;padding:9px 16px;border-radius:9px;
+  border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
+#orgbar button:hover{background:rgba(255,255,255,.18)}
+#orgbar button.pri{background:#3fb9d6;border-color:#3fb9d6;color:#012}
+#orgvers{flex:none;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 26px;
+  background:#0a1330;border-bottom:1px solid rgba(255,255,255,.10);color:#cfe2f2}
+#orgvers .lbl{font-size:13px;font-weight:850;letter-spacing:.16em;text-transform:uppercase;color:#7fa9c9}
+#orgvers button{font-family:inherit;font-size:13px;font-weight:700;padding:7px 13px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.20);background:rgba(255,255,255,.07);color:#fff;cursor:pointer}
+#orgvers button:hover{background:rgba(255,255,255,.17)}
+#orgvers input[type=text]{font-family:inherit;font-size:13px;font-weight:600;padding:7px 11px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.20);background:rgba(255,255,255,.07);color:#fff;width:190px}
+#orgvers input[type=text]::placeholder{color:#7fa9c9}
+#orgvers .sep{width:1px;height:24px;background:rgba(255,255,255,.16);margin:0 4px}
+#orgvers .cnt{margin-left:auto;font-size:13px;font-weight:800;color:#9fc6dd;font-variant-numeric:tabular-nums}
+.vchip{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;padding:6px 8px 6px 12px;
+  border-radius:999px;border:1px solid #3fb9d6;background:rgba(63,185,214,.14);color:#cfedf4;cursor:pointer}
+.vchip:hover{background:rgba(63,185,214,.30)}
+.vchip .x{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;
+  font-size:12px;line-height:18px;text-align:center;cursor:pointer}
+.vchip .x:hover{background:#c0453f}
+
+
+/* ---------- IR PARA ---------- */
+#irpara{position:fixed;inset:0;z-index:80;background:rgba(14,11,28,.72);backdrop-filter:blur(3px);
+  display:none;align-items:flex-start;justify-content:center;padding-top:9vh}
+#irpara.open{display:flex}
+#irpara .cx{width:min(880px,92vw);background:#fff;border-radius:18px;overflow:hidden;
+  box-shadow:0 40px 90px -20px rgba(0,0,0,.6);display:flex;flex-direction:column;max-height:76vh}
+#irbusca{border:none;outline:none;font:600 26px/1.3 var(--font,system-ui);padding:22px 26px;
+  color:#1e1b33;border-bottom:1.5px solid #cdd1dd;background:#fff}
+#irbusca::placeholder{color:#9a97ad;font-weight:500}
+#irlista{overflow:auto;flex:1}
+#irlista .lin{display:flex;align-items:baseline;gap:16px;padding:12px 26px;cursor:pointer;border-bottom:1px solid #eceef4}
+#irlista .lin:last-child{border-bottom:none}
+#irlista .lin .num{flex:none;width:52px;font:700 18px/1 var(--font-ut,ui-monospace);color:#7a7595;text-align:right}
+#irlista .lin .tit{flex:1;font-size:21px;font-weight:600;color:#1e1b33;line-height:1.26}
+#irlista .lin .sec{flex:none;font:600 15px/1 var(--font-ut,ui-monospace);letter-spacing:.06em;
+  text-transform:uppercase;color:#8a86a0;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#irlista .lin.sel{background:#ebe5f8}
+#irlista .lin.sel .num{color:#58389b}
+#irlista .lin.divis .tit{font-weight:800;color:#58389b}
+#irlista .vazio{padding:26px;font-size:20px;color:#8a86a0}
+#irpara .dica{padding:12px 26px;border-top:1.5px solid #cdd1dd;background:#f4f5f9;
+  font:600 15px/1 var(--font-ut,ui-monospace);letter-spacing:.05em;color:#8a86a0}
+#orggrid{flex:1;overflow:auto;padding:22px 26px;display:flex;flex-wrap:wrap;gap:18px;align-content:flex-start}
+.ocard{width:286px;flex:0 0 286px;background:#131a2e;border:2px solid #26304a;border-radius:12px;
+  overflow:hidden;cursor:grab;position:relative;display:flex;flex-direction:column;
+  transition:border-color .15s,opacity .15s}
+.ocard .othumb{flex:none}
+.ocard .obar{flex:none}
+.ocard:hover{border-color:#3fb9d6}
+.ocard.drag{opacity:.35}
+.ocard.over{border-color:#3fb9d6;box-shadow:0 0 0 3px rgba(63,185,214,.35)}
+.ocard.off{opacity:.42}
+.ocard.off .othumb{filter:grayscale(1)}
+.ocard.cur{border-color:#f4a23b}
+.othumb{position:relative;width:100%;overflow:hidden;background:#fff}
+#org [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+#org .stage *{animation:none!important}
+.othumb .stage{position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none}
+.othumb .oslide{position:absolute!important;left:0;top:0;display:block!important;inset:auto!important;
+  width:1920px;height:1080px;transform-origin:0 0;pointer-events:none}
+.ocard .oeye svg{width:15px;height:15px;display:block}
+.ocard .obar{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#131a2e}
+.ocard .onum{flex:none;min-width:26px;height:22px;border-radius:6px;background:#26304a;color:#cfe2f2;
+  font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 6px}
+.ocard .otit{flex:1;font-size:12.5px;font-weight:600;color:#cfe2f2;line-height:1.25;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ocard .omov{flex:none;width:24px;height:26px;border-radius:7px;border:1px solid #33405e;background:#1b2338;
+  color:#9fc6dd;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.ocard .omov:hover{background:#26304a;color:#fff}
+.ocard .oeye{flex:none;width:26px;height:26px;border-radius:7px;border:1px solid #33405e;background:#1b2338;
+  color:#9fc6dd;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ocard .oeye:hover{background:#26304a;color:#fff}
+.ocard.off .oeye{background:#3a2430;color:#e59a9a;border-color:#5a3340}
+html.nofx #orgbtn{display:none}
+@media print{#orgbtn,#org{display:none!important}}
+.slide.oculto{display:none!important}
+
+/* passos por clique */
+[data-passo]{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease}
+[data-passo].on{opacity:1;transform:none}
+html.nofx [data-passo],#org [data-passo]{opacity:1!important;transform:none!important;transition:none!important}
+
+/* modo anotacao — fica por cima de tudo, inclusive do organizador */
+#anot{position:fixed;left:50%;transform:translateX(-50%) translateY(14px);bottom:26px;
+  width:min(920px,92vw);background:#1e1b33;color:#f3f0fa;border-radius:16px;
+  box-shadow:0 18px 60px rgba(0,0,0,.5);padding:16px 20px;z-index:99999;
+  opacity:0;pointer-events:none;transition:opacity .16s,transform .16s;
+  font-family:var(--font),system-ui,sans-serif}
+#anot.on{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+#anot .cab{display:flex;align-items:baseline;gap:12px;margin-bottom:10px}
+#anot .cab b{font-size:19px;font-weight:800;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#anot .cab i{font-style:normal;font-family:var(--font-ut),monospace;font-size:13px;
+  letter-spacing:.08em;color:#a9a3c4;flex:none}
+#anot textarea{width:100%;box-sizing:border-box;background:#2a2545;color:#f3f0fa;border:2px solid #3a3457;
+  border-radius:10px;padding:11px 13px;font:500 18px/1.35 var(--font),system-ui,sans-serif;resize:vertical}
+#anot textarea:focus{outline:none;border-color:#b79bee}
+#anot .pe{display:flex;justify-content:space-between;gap:16px;margin-top:9px;
+  font-family:var(--font-ut),monospace;font-size:12px;letter-spacing:.06em;color:#8b85a8}
+#anot .pe em{font-style:normal;color:#b79bee;font-weight:700;flex:none}
+#org .mini.temnota{outline:3px solid #e0a53a;outline-offset:2px}
+
+#anot .pe .mic{background:#2a2545;color:#f3f0fa;border:2px solid #3a3457;border-radius:8px;
+  padding:5px 12px;font:700 12px/1 var(--font-ut),monospace;letter-spacing:.06em;cursor:pointer;flex:none}
+#anot .pe .mic:hover{border-color:#b79bee}
+#anot .pe .mic.rec{background:#7a2420;border-color:#e0564f;color:#ffd9d6}
+#anot .pe span{flex:1}
+#org .mini.temnota{outline:3px solid #e0a53a;outline-offset:2px}
+
+#anot .cab .x{background:none;border:none;color:#8b85a8;font:400 26px/1 system-ui;cursor:pointer;
+  padding:0 2px;flex:none;margin-left:4px}
+#anot .cab .x:hover{color:#f3f0fa}
+#anot .pe span b{color:#b79bee;font-weight:800}
+</style>
+<button id="orgbtn" title="Organizar slides (tecla O)">&#9776; Organizar</button>
+<div id="org">
+  <div id="orgbar">
+    <h2>Organizar slides</h2>
+    <span class="dica">arraste para reordenar · clique no olho para ocultar · clique na miniatura para ir ao slide</span>
+    <span class="sp">
+      <button id="orgreset">Restaurar original</button>
+      <button id="orgclose" class="pri">Fechar (O)</button>
+    </span>
+  </div>
+  <div id="orgvers">
+    <span class="lbl">Versões</span>
+    <button id="vertodos">Todos os slides</button>
+    <span class="sep"></span>
+    <span id="verlist"></span>
+    <input type="text" id="vername" placeholder="nome da versão…" maxlength="40">
+    <button id="versave">Salvar seleção atual</button>
+    <span class="sep"></span>
+    <button id="verhtml" title="Gera um .html só com os slides visíveis, na ordem atual">Baixar HTML da seleção</button>
+    <button id="verexp">Exportar .json</button>
+    <button id="verimp">Importar</button>
+    <input type="file" id="verfile" accept="application/json,.json" style="display:none">
+    <span class="cnt" id="vercnt"></span>
+  </div>
+  <div id="orggrid"></div>
+</div>
+
+<!-- IR PARA: busca por titulo, secao ou numero. Tecla G (ou /) abre; Esc fecha. -->
+<div id="irpara" role="dialog" aria-label="Ir para a lâmina">
+  <div class="cx">
+    <input type="text" id="irbusca" placeholder="digite parte do título, o bloco ou o número da lâmina…" autocomplete="off" spellcheck="false">
+    <div id="irlista"></div>
+    <div class="dica">↑ ↓ para escolher · Enter para ir · Esc para fechar</div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   MOTOR DO DECK — navegação, escala, reveals, gráficos
+   e organizador (reordenar / ocultar) com estado salvo
+   ============================================================ */
+const deckEl=document.getElementById('deck');
+const slides=[...deckEl.querySelectorAll('.slide')];
+const N=slides.length;
+const KEY='deck-org:'+(document.title||'deck');
+const NOFX=/[?&]static=1/.test(location.search);
+if(/[?&]wm=1/.test(location.search))document.documentElement.classList.add('wm');
+if(NOFX)document.documentElement.classList.add('nofx');
+
+let state={order:slides.map((_,i)=>i), hidden:slides.map(()=>false)};
+/* migra uma seleção salva para o deck atual: mantém ordem e ocultos e coloca
+   as lâminas novas no fim, visíveis — nunca descarta o trabalho do usuário */
+function migrar(p){
+  if(!p||!Array.isArray(p.order)||!Array.isArray(p.hidden))return null;
+  const ord=[], visto=new Set();
+  for(const i of p.order){ if(Number.isInteger(i)&&i>=0&&i<N&&!visto.has(i)){ord.push(i);visto.add(i);} }
+  for(let i=0;i<N;i++) if(!visto.has(i)) ord.push(i);
+  const hid=[];
+  for(let i=0;i<N;i++) hid[i] = (i<p.hidden.length) ? !!p.hidden[i] : false;
+  return {order:ord, hidden:hid};
+}
+if(!document.documentElement.hasAttribute('data-export')){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(raw){const m=migrar(JSON.parse(raw)); if(m) state=m;}
+  }catch(e){}
+}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}};
+const vis=()=>state.order.filter(i=>!state.hidden[i]);
+
+let cur=0;
+const progress=document.getElementById('progress');
+const counter=document.getElementById('counter');
+const hint=document.getElementById('hint');
+
+function fit(){
+  const s=Math.min(innerWidth/1920, innerHeight/1080);
+  deckEl.querySelectorAll('.stage').forEach(st=>st.style.transform='scale('+s+')');
+}
+addEventListener('resize', ()=>{fit(); const a=document.querySelector('#deck .slide.active'); if(a) ajustarFiguras(a);});
+
+function applyState(keepIdx){
+  state.order.forEach(i=>deckEl.appendChild(slides[i]));
+  slides.forEach((sl,i)=>sl.classList.toggle('oculto', state.hidden[i]));
+  const v=vis();
+  if(!v.length)return;
+  let k=v.indexOf(keepIdx);
+  cur=k>=0?k:Math.min(cur, v.length-1);
+  fit(); show(cur, true);
+  save();
+}
+
+/* ---------- gráficos em CSS/SVG ---------- */
+function resetChart(sl){
+  sl.querySelectorAll('.stack .seg').forEach(s=>s.style.height='0px');
+  sl.querySelectorAll('.vbcol .bar').forEach(b=>b.style.height='0px');
+  sl.querySelectorAll('.hbar .fill, .barrow .fill').forEach(f=>f.style.width='0%');
+}
+function paintChart(sl){
+  sl.querySelectorAll('.stack').forEach(st=>{
+    const H=st.clientHeight||520;
+    st.querySelectorAll('.seg').forEach(s=>s.style.height=Math.max(0,(+s.dataset.h)/100*H)+'px');
+  });
+  sl.querySelectorAll('.vbars').forEach(vb=>{
+    const H=vb.clientHeight||300;
+    vb.querySelectorAll('.vbcol').forEach(c=>{
+      const bar=c.querySelector('.bar'); if(!bar)return;
+      const vv=c.querySelector('.vv'), lb=c.querySelector('.lb');
+      const avail=H-(vv?vv.offsetHeight+8:0)-(lb?lb.offsetHeight+10:0);
+      bar.style.height=Math.max(2,(+bar.dataset.h)/100*avail)+'px';
+    });
+  });
+  sl.querySelectorAll('.hbar .fill, .barrow .fill').forEach(f=>f.style.width=(+f.dataset.w)+'%');
+  sl.querySelectorAll('.donut[data-pct]').forEach(makeDonut);
+}
+const NS='http://www.w3.org/2000/svg';
+function makeDonut(d){
+  let svg=d.querySelector('svg');
+  const pct=+d.dataset.pct, color=d.dataset.color||'var(--cyan)';
+  if(!svg){
+    svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 100 100');
+    const mk=(stroke,cls)=>{const c=document.createElementNS(NS,'circle');
+      c.setAttribute('cx',50);c.setAttribute('cy',50);c.setAttribute('r',44);
+      c.setAttribute('fill','none');c.setAttribute('stroke',stroke);c.setAttribute('stroke-width',9);
+      if(cls){c.setAttribute('stroke-linecap','round');c.classList.add(cls);} svg.appendChild(c);};
+    mk('#e4eaf2'); mk(color,'arc');
+    d.insertBefore(svg,d.firstChild);
+  }
+  const arc=svg.querySelector('.arc'), C=2*Math.PI*44, fim=C*(1-pct/100);
+  const dv=d.querySelector('.dv');
+  if(dv && !dv.dataset.alvo) dv.dataset.alvo=dv.textContent.trim();
+  arc.style.strokeDasharray=C; arc.style.transition='none';
+  clearTimeout(d._t1); clearTimeout(d._t2); if(d._raf) cancelAnimationFrame(d._raf);
+  const semFx=document.documentElement.classList.contains('nofx')||document.body.classList.contains('online');
+  if(semFx){ arc.style.strokeDashoffset=fim; if(dv) dv.textContent=dv.dataset.alvo; return; }
+  /* O donut so comeca a girar DEPOIS que o bloco [data-reveal] que o contem terminou de
+     aparecer (senao a animacao acontece atras do fade-in e parece estatico), e os donuts
+     de uma mesma lamina entram escalonados. O numero do meio conta de zero ate o valor. */
+  const rev=d.closest('[data-reveal]');
+  const base=rev ? (parseFloat(rev.style.transitionDelay)||0)*1000+620 : 160;
+  const sl=d.closest('.slide')||document;
+  const idx=[...sl.querySelectorAll('.donut[data-pct]')].indexOf(d);
+  const atraso=base+Math.max(0,idx)*280, dur=1500;
+  arc.style.strokeDashoffset=C;
+  if(dv) dv.textContent=dv.dataset.alvo.replace(/\d+(?:[.,]\d+)?/g,'0');
+  d._t1=setTimeout(()=>{
+    arc.style.transition='stroke-dashoffset '+dur+'ms cubic-bezier(.22,.9,.3,1)';
+    arc.style.strokeDashoffset=fim;
+    if(dv) contarAte(d,dv,dv.dataset.alvo,dur);
+  },atraso);
+  d._t2=setTimeout(()=>{arc.style.strokeDashoffset=fim; if(dv) dv.textContent=dv.dataset.alvo;},atraso+dur+250);
+}
+function contarAte(d,el,alvo,dur){
+  if(!/\d/.test(alvo)){el.textContent=alvo;return;}
+  const t0=performance.now();
+  const passo=now=>{
+    const k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3);
+    el.textContent=alvo.replace(/\d+(?:[.,]\d+)?/g,m=>{
+      const dec=(m.split(/[.,]/)[1]||'').length;
+      return (parseFloat(m.replace(',','.'))*e).toFixed(dec).replace('.',',');
+    });
+    if(k<1) d._raf=requestAnimationFrame(passo); else el.textContent=alvo;
+  };
+  d._raf=requestAnimationFrame(passo);
+}
+
+
+/* ------------------------------------------------------------------
+   LAYOUT DA FIGURA — a .figwrap recua sozinha para não passar por cima
+   do que estiver ancorado embaixo (leitura-chave, fileira de chips,
+   cartões). Roda no slide ativo e, no modo estático, em todos.
+   ------------------------------------------------------------------ */
+/* A leitura-chave (e o callout de rodape) tem `top` fixo no HTML. Quando o texto
+   acima cresce — fonte maior, bullet a mais — ela era invadida. Aqui o motor mede
+   o conteudo e empurra a caixa para baixo dele, respeitando o rodape de fonte. */
+/* Rede de seguranca tipografica: NENHUM texto pode vazar da sua caixa.
+   As caixas tem altura definida no HTML; quando o conteudo cresce (fonte maior,
+   um item a mais), ele transbordava em silencio. Aqui o motor mede e encolhe o
+   corpo do bloco em passos de 2%, ate 82% do tamanho original. Abaixo disso o
+   problema e de texto, nao de tipografia — o bloco fica marcado com
+   data-apertado e o QA reporta. */
+function ajustarTexto(sl){
+  sl.querySelectorAll('.leitura, .card, .callout, .cx').forEach(cx=>{
+    const alvos = [...cx.querySelectorAll('li, .t, p')];
+    if(!alvos.length) return;
+    alvos.forEach(el=>{ if(el.dataset.fs0===undefined) el.dataset.fs0 = parseFloat(getComputedStyle(el).fontSize); });
+    let k = parseFloat(sl.dataset.kfill) || 1, guarda = 0;   // parte do que o preencherVazio deixou
+    const aplicar = ()=> alvos.forEach(el=>{ el.style.fontSize = (parseFloat(el.dataset.fs0)*k).toFixed(1)+'px'; });
+    aplicar();
+    while(cx.scrollHeight - cx.clientHeight > 2 && k > 0.82 && guarda++ < 20){ k -= 0.02; aplicar(); }
+    if(cx.scrollHeight - cx.clientHeight > 2) cx.dataset.apertado = Math.round(k*100);
+    else delete cx.dataset.apertado;
+  });
+}
+function ajustarLeitura(sl){
+  const stage = sl.querySelector('.stage'); if(!stage) return;
+  const caixas = [...sl.querySelectorAll('.leitura, .callout')].filter(e=>getComputedStyle(e).position==='absolute');
+  if(!caixas.length) return;
+  const S = stage.getBoundingClientRect(); if(S.width<10) return;
+  const esc = getComputedStyle(stage).transform;
+  const k = (esc && esc!=='none') ? (S.width/1920) : 1;
+  const box = e => { const r=e.getBoundingClientRect();
+                     return {t:(r.top-S.top)/k, b:(r.bottom-S.top)/k, l:(r.left-S.left)/k, r:(r.right-S.left)/k}; };
+  const rodape = sl.querySelector('footer.fonte');
+  const limite = rodape ? box(rodape).t - 14 : 1046;
+  caixas.forEach(cx=>{
+    if(cx.dataset.topOrig===undefined) cx.dataset.topOrig = cx.style.top || '';
+    cx.style.top = cx.dataset.topOrig;                  // recomeca do valor do CSS
+    const C = box(cx);
+    let maxB = 0;
+    blocosDoPalco(sl).forEach(e=>{
+      if(cx===e || cx.contains(e) || e.contains(cx)) return;
+      const B = box(e);
+      const cruzaX = B.r > C.l + 8 && B.l < C.r - 8;
+      const acimaOuInvade = B.t < C.t + (C.b - C.t);      // comeca antes do fim da caixa
+      if(cruzaX && acimaOuInvade) maxB = Math.max(maxB, B.b);
+    });
+    if(!maxB) return;
+    const alvo = Math.round(maxB + 18);
+    const alt = C.b - C.t;
+    // se nao couber inteiro, encosta no rodape: melhor apertado que sobreposto
+    const destino = (alvo + alt > limite) ? Math.max(C.t, Math.round(limite - alt)) : alvo;
+    if(destino > C.t + 4) cx.style.top = destino + 'px';   // so desce: subir tapa o conteudo
+  });
+}
+/* Rede de seguranca 2: nada pode cobrir o rodape de fonte. Um bloco que
+   cresceu demais (texto longo demais para a caixa) invade o rodape em silencio.
+   Aqui o motor mede a distancia ate o topo do rodape e encolhe o corpo do bloco
+   em passos de 2%, ate 84%. O que nao couber nisso fica marcado com
+   data-invade e o QA reporta — ai o problema e de texto, nao de tipografia. */
+function evitarRodape(sl){
+  const rodape = sl.querySelector('footer.fonte'); if(!rodape) return;
+  const stage = sl.querySelector('.stage'); if(!stage) return;
+  const S = stage.getBoundingClientRect(); if(S.width < 10) return;
+  const teto = rodape.getBoundingClientRect().top - 4;
+  sl.querySelectorAll('.leitura, .card, .callout, .cx, .chip, .statcard').forEach(cx=>{
+    const alvos = [...cx.querySelectorAll('li, .t, p, .v, .k')];
+    if(!alvos.length) return;
+    alvos.forEach(el=>{ if(el.dataset.fr0===undefined) el.dataset.fr0 = parseFloat(getComputedStyle(el).fontSize); });
+    let k = 1, guarda = 0;
+    const aplicar = ()=> alvos.forEach(el=>{ el.style.fontSize = (parseFloat(el.dataset.fr0)*k).toFixed(1)+'px'; });
+    const invade = ()=> cx.getBoundingClientRect().bottom - teto;
+    if(invade() <= 0) return;
+    while(invade() > 0 && k > 0.84 && guarda++ < 20){ k -= 0.02; aplicar(); }
+    if(invade() > 0) cx.dataset.invade = Math.round(invade());
+    else delete cx.dataset.invade;
+  });
+}
+/* Distribuicao vertical: laminas com pouco conteudo deixavam uma faixa branca
+   entre o ultimo bloco e o rodape. Aqui o motor mede essa folga e cresce a
+   tipografia dos blocos de texto (ate 18%), junto com o espacamento entre os
+   itens, ate a lamina ocupar a altura de que dispoe. E o inverso do
+   ajustarTexto: um aperta o que sobra, o outro ocupa o que falta. */
+function preencherVazio(sl){
+  const ft = sl.querySelector('footer.fonte'); if(!ft) return;
+  for(const c of ['quiz','bignum','impacto','secao','capa','animfull','perguntas','aviso','despedida'])
+    if(sl.classList.contains(c)) return;
+  const alvos = alvosDeTexto(sl);
+  if(!alvos.length) return;
+  alvos.forEach(el=>{
+    if(el.dataset.fs0===undefined) el.dataset.fs0 = parseFloat(getComputedStyle(el).fontSize);
+    if(el.dataset.mg0===undefined){ const c=getComputedStyle(el);
+      el.dataset.mg0 = parseFloat(c.marginTop)+'|'+parseFloat(c.marginBottom); }
+  });
+  const aplicar = k => alvos.forEach(el=>{
+    el.style.fontSize = (parseFloat(el.dataset.fs0)*k).toFixed(1)+'px';
+    const [mt,mb] = el.dataset.mg0.split('|').map(Number);
+    el.style.marginTop = (mt*k).toFixed(1)+'px';
+    el.style.marginBottom = (mb*k).toFixed(1)+'px';
+  });
+  // mede so a distancia; o teste de "ja transbordou" vale para as caixas de
+  // texto, nao para tabela/figura (que reportam 1-2px de sobra por arredondamento)
+  const medir = ()=>{
+    const teto = ft.getBoundingClientRect().top;
+    let maxB = 0, cheio = false;
+    blocosDoPalco(sl).forEach(e=>{
+      if(e.matches('.leitura,.card,.callout,.cx') && e.scrollHeight - e.clientHeight > 4) cheio = true;
+      maxB = Math.max(maxB, e.getBoundingClientRect().bottom);
+    });
+    return {sobra: Math.round(teto - maxB), cheio};
+  };
+  const folga = ()=>{ const m = medir(); return m.cheio ? -1 : m.sobra; };
+  // crescer demais faz a leitura-chave nao caber mais entre o conteudo e o
+  // rodape; ajustarLeitura entao a encosta no rodape e ela cobre o cartao.
+  // Este teste detecta esse estado e o loop volta um passo.
+  const colide = ()=>{
+    const els = blocosDoPalco(sl);
+    for(let a=0;a<els.length;a++) for(let b=a+1;b<els.length;b++){
+      const A=els[a], B=els[b];
+      if(A.contains(B) || B.contains(A)) continue;
+      const x=A.getBoundingClientRect(), y=B.getBoundingClientRect();
+      if(Math.min(x.right,y.right)-Math.max(x.left,y.left) > 6 &&
+         Math.min(x.bottom,y.bottom)-Math.max(x.top,y.top) > -12) return true;   // < 12px de respiro ja conta
+    }
+    return false;
+  };
+  // desloca pelo top, nao por transform: os blocos com data-reveal ja usam
+  // transform na animacao de entrada e um sobrescreveria o outro.
+  // A leitura/callout ficam de fora — quem as posiciona e o ajustarLeitura.
+  const centrar = d => sl.querySelectorAll('.stage > *').forEach(e=>{
+    if(e.matches('.topbar, .sub, footer.fonte, .selo-fase, .halo, .fundo, .secao-bg, .veu-sec, .leitura, .callout, style, script')) return;
+    const st = getComputedStyle(e);
+    if(st.position !== 'absolute' || st.top === 'auto') return;
+    if(e.dataset.top0 === undefined) e.dataset.top0 = parseFloat(st.top) || 0;
+    e.style.top = (parseFloat(e.dataset.top0) + d) + 'px';
+  });
+  sl.dataset.kfill = 1; centrar(0); aplicar(1); ajustarLeitura(sl);
+  if(folga() < 70 || colide()) return;           // nada a preencher, ou ja apertado
+  let k = 1;
+  while(k < 1.26){
+    const t = k + 0.02; aplicar(t); ajustarLeitura(sl);
+    const f = folga();
+    if(f < 30 || colide()){ aplicar(k); ajustarLeitura(sl); break; }  // passou do ponto: volta um passo
+    k = t;
+    if(f < 40) break;
+  }
+  sl.dataset.kfill = k;
+  // o que a tipografia nao preencheu vira respiro dividido: o conteudo desce
+  // ate ficar opticamente centrado entre o subtitulo e o rodape
+  const resto = medir().sobra;                  // aqui vale a distancia real
+  if(resto > 60){ centrar(Math.min(Math.round((resto - 30) / 2), 130)); ajustarLeitura(sl); }
+}
+/* Rede de seguranca 3: se, mesmo depois de tudo, um bloco ainda encosta em
+   outro ou passa do rodape, o motor aperta a lamina inteira em passos de 2%
+   (ate 80%) — texto encolhido e melhor que texto sobreposto. */
+function apertarSePreciso(sl){
+  const ft = sl.querySelector('footer.fonte'); if(!ft) return;
+  for(const c of ['quiz','bignum','impacto','secao','capa','animfull','perguntas'])
+    if(sl.classList.contains(c)) return;
+  const alvos = alvosDeTexto(sl);
+  if(!alvos.length) return;
+  alvos.forEach(el=>{ if(el.dataset.fs0===undefined) el.dataset.fs0 = parseFloat(getComputedStyle(el).fontSize); });
+  const ruim = ()=>{
+    const teto = ft.getBoundingClientRect().top;
+    const els = blocosDoPalco(sl);
+    for(const e of els) if(e.getBoundingClientRect().bottom > teto + 2) return true;
+    for(let a=0;a<els.length;a++) for(let b=a+1;b<els.length;b++){
+      const A=els[a], B=els[b]; if(A.contains(B)||B.contains(A)) continue;
+      const x=A.getBoundingClientRect(), y=B.getBoundingClientRect();
+      if(Math.min(x.right,y.right)-Math.max(x.left,y.left) > 6 &&
+         Math.min(x.bottom,y.bottom)-Math.max(x.top,y.top) > 2) return true;
+    }
+    return false;
+  };
+  if(!ruim()) return;
+  let k = parseFloat(sl.dataset.kfill) || 1, guarda = 0;
+  const aplicar = ()=> alvos.forEach(el=>{ el.style.fontSize = (parseFloat(el.dataset.fs0)*k).toFixed(1)+'px'; });
+  while(ruim() && k > 0.80 && guarda++ < 25){ k -= 0.02; aplicar(); ajustarLeitura(sl); }
+  sl.dataset.kfill = k;
+  /* chegou ao piso e A LAMINA AINDA ESTA SOBREPOSTA. Antes a rede desistia calada e o
+     defeito so aparecia no telao. Agora fica marcado (data-estourou) e sai no console,
+     para o QA e o render_lamina.py pegarem antes do palco. */
+  if(ruim()){
+    sl.dataset.estourou = Math.round(k*100);
+    console.warn('lâmina estourada mesmo no piso de '+Math.round(k*100)+'%: '+(sl.dataset.id||sl.className));
+  } else delete sl.dataset.estourou;
+}
+/* Todo bloco que de fato pinta area no palco — cartao, tabela, figura, caixa
+   com fundo — venha ele de uma classe do motor ou de um <style> local da
+   lamina. E o que as redes de seguranca usam para medir colisao e folga. */
+/* Todo elemento de texto do palco — nao so os cartoes. As laminas com estrutura
+   propria (linha do tempo, painel de estimativa, mapa de doencas) precisam
+   crescer e encolher junto, senao sobra faixa branca embaixo delas. */
+function alvosDeTexto(sl){
+  const alvos = [];
+  sl.querySelectorAll('.stage *').forEach(el=>{
+    if(el.closest('.topbar, footer.fonte, .selo-fase, svg, .donut, .qrbox, .segunda')) return;
+    const sub = el.closest('.sub');            // so o subtitulo da lamina fica de fora
+    if(sub && sub.parentElement && sub.parentElement.classList.contains('stage')) return;
+    if(['STYLE','SCRIPT','IMG','SVG','VIDEO','CANVAS','BR'].includes(el.tagName)) return;
+    const st = getComputedStyle(el);
+    if(st.display === 'none' || st.visibility === 'hidden') return;
+    const proprio = [...el.childNodes].some(nd=>nd.nodeType===3 && nd.textContent.trim().length>2);
+    if(!proprio) return;
+    if(parseFloat(st.fontSize) > 56) return;      // numero gigante ja e o destaque
+    alvos.push(el);
+  });
+  return alvos;
+}
+/* Titulo em duas linhas empurra o subtitulo e come o palco. Em vez de reescrever
+   trinta titulos, o motor reduz a fonte do h1 (ate 84%) ate ele caber em uma
+   linha; o que nem assim couber fica em duas, como antes. */
+function ajustarTitulo(sl){
+  const h = sl.querySelector('.topbar h1'); if(!h) return;
+  if(h.dataset.fs0 === undefined) h.dataset.fs0 = parseFloat(getComputedStyle(h).fontSize);
+  const base = parseFloat(h.dataset.fs0);
+  let k = 1;
+  const aplicar = ()=> h.style.fontSize = (base * k).toFixed(1) + 'px';
+  aplicar();
+  const linhas = ()=> {
+    const lh = parseFloat(getComputedStyle(h).lineHeight) || base * k * 1.05;
+    return Math.round(h.getBoundingClientRect().height / lh);
+  };
+  let guarda = 0;
+  while(linhas() > 1 && k > 0.84 && guarda++ < 12){ k -= 0.02; aplicar(); }
+}
+function blocosDoPalco(sl){
+  const out = [];
+  sl.querySelectorAll('.stage *').forEach(e=>{
+    if(e.closest('.topbar, .sub, footer.fonte, .selo-fase')) return;
+    if(e.tagName === 'STYLE' || e.tagName === 'SCRIPT') return;
+    const st = getComputedStyle(e);
+    if(st.display === 'none' || st.visibility === 'hidden') return;
+    const pinta = (st.backgroundColor && st.backgroundColor !== 'rgba(0, 0, 0, 0)') ||
+                  (st.backgroundImage && st.backgroundImage !== 'none') ||
+                  ['IMG','TABLE','CANVAS','VIDEO'].includes(e.tagName) || e.tagName === 'svg';
+    if(!pinta) return;
+    const b = e.getBoundingClientRect();
+    if(b.width < 20 || b.height < 16) return;
+    out.push(e);
+  });
+  return out;
+}
+function ajustarFiguras(sl){
+  const stage = sl.querySelector('.stage'); if(!stage) return;
+  const figs = sl.querySelectorAll('.figwrap');
+  if(!figs.length) return;
+  const S = stage.getBoundingClientRect();
+  if(S.width < 10 || S.height < 10) return;      // slide oculto: medidas não valem
+  const esc = getComputedStyle(stage).transform;
+  const k = (esc && esc !== 'none') ? (S.width/1920) : 1;   // desfaz a escala do palco
+  const abs = e => { const r=e.getBoundingClientRect();
+                     return {t:(r.top-S.top)/k, b:(r.bottom-S.top)/k,
+                             l:(r.left-S.left)/k, r:(r.right-S.left)/k}; };
+  const CAND = '.leitura, .chip, .card, .statcard, table.t, .callout, .figcap, .abox, .box, .nota, .banda';
+  figs.forEach(fw=>{
+    if(getComputedStyle(fw).position !== 'absolute') return;   // figuras em fluxo ficam de fora
+    fw.style.bottom = '';                                      // recomeça do valor do CSS
+    fw.style.top = '';
+    /* Empurra o TOPO para baixo quando o bloco de cima (ficha, subtítulo) cresceu —
+       é o que acontece no modo on-line, em que a tipografia sobe de piso. Sem isto
+       a ficha passa por cima da figura. */
+    {
+      const F0 = abs(fw);
+      let teto = -Infinity;
+      stage.querySelectorAll('.ficha, .sub, .topbar, .selo-fase').forEach(e=>{
+        const st = getComputedStyle(e);
+        if(st.display==='none' || st.visibility==='hidden') return;
+        const E = abs(e);
+        if(E.b - E.t < 8) return;
+        const cruzaX = Math.min(F0.r,E.r) - Math.max(F0.l,E.l) > 8;
+        if(cruzaX && E.b > F0.t && E.t < F0.t + 30) teto = Math.max(teto, E.b);
+      });
+      if(teto > -Infinity){
+        const novoTopo = Math.round(teto + 12);
+        if(novoTopo > F0.t + 2) fw.style.top = novoTopo + 'px';
+      }
+    }
+    const F = abs(fw);
+    let alvo = Infinity;
+    stage.querySelectorAll(CAND).forEach(e=>{
+      if(fw.contains(e) || e.contains(fw)) return;
+      const st = getComputedStyle(e);
+      if(st.display==='none' || st.visibility==='hidden') return;
+      const E = abs(e);
+      if(E.b - E.t < 12) return;
+      // só conta quem está abaixo do topo da figura E se cruza com ela na horizontal
+      const cruzaX = Math.min(F.r,E.r) - Math.max(F.l,E.l) > 8;
+      if(cruzaX && E.t > F.t + 30) alvo = Math.min(alvo, E.t);
+    });
+    if(alvo === Infinity) return;
+    const novo = Math.round(1080 - alvo + 16);                 // 16px de respiro
+    const atual = parseFloat(getComputedStyle(fw).bottom) || 0;
+    if(novo > atual + 2) fw.style.bottom = novo + 'px';
+  });
+}
+
+
+/* Vídeo da lâmina: recomeça do zero toda vez que a lâmina entra e para quando sai.
+   Sem isso ele fica congelado no último frame ao voltar para trás. */
+function tocarVideo(sl){
+  document.querySelectorAll('#deck video').forEach(v=>{ if(v.closest('.slide')!==sl){ v.pause(); try{v.currentTime=0;}catch(e){} } });
+  const v=sl.querySelector('video'); if(!v) return;
+  try{ v.currentTime=0; }catch(e){}
+  const p=v.play(); if(p&&p.catch) p.catch(()=>{});   // autoplay bloqueado: fica no poster
+}
+let voltandoUmSlide=false;         // ver o reset dos [data-passo] logo abaixo
+/* As tres passadas de encaixe (rAF, 160 ms, 760 ms) fecham sobre A LAMINA que estava
+   entrando. Passando de lamina em menos de 760 ms, elas rodavam com a lamina ja
+   ESCONDIDA — todas as medidas dao zero e o preencherVazio devolvia a tipografia para
+   k=1, desfazendo o aperto que aquela lamina precisava. Ficava errada no organizador e
+   na impressao (beforeprint nao refaz o encaixe). Agora a troca cancela o que sobrou. */
+let tLayout=[];
+function show(k, silent){
+  const v=vis(); if(!v.length)return;
+  k=Math.max(0,Math.min(v.length-1,k));
+  tLayout.forEach(clearTimeout); tLayout=[];
+  slides.forEach(sl=>sl.classList.remove('active'));
+  cur=k; const sl=slides[v[k]];
+  /* passos por clique: a lamina volta ao estado inicial toda vez que se ENTRA nela.
+     Sem isto, rever a lamina (pelo organizador, pelo "Ir para" ou so voltando duas
+     vezes) a abria com tudo ja revelado e a construcao passo a passo se perdia.
+     Excecao: chegando de tras com a seta esquerda, o que estava revelado continua. */
+  if(!voltandoUmSlide) sl.querySelectorAll('[data-passo].on').forEach(e=>e.classList.remove('on'));
+  sl.querySelectorAll('[data-reveal]').forEach((el,q)=>{el.style.transitionDelay=(0.06*q)+'s';});
+  resetChart(sl);
+  tocarVideo(sl);
+  void sl.offsetWidth;
+  sl.classList.add('active');
+  document.documentElement.classList.toggle('nacapa', sl.classList.contains('capa')); // botão de zerar só na capa
+  progress.style.width=(v.length>1?(k/(v.length-1)*100):100)+'%';
+  counter.textContent=(k+1)+' / '+v.length+(document.body.classList.contains('numeros')?' · '+(sl.dataset.id||''):'');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{paintChart(sl);ajustarTitulo(sl);ajustarFiguras(sl);ajustarLeitura(sl);preencherVazio(sl);ajustarTexto(sl);evitarRodape(sl);apertarSePreciso(sl);}));
+  tLayout.push(setTimeout(()=>{paintChart(sl);ajustarTitulo(sl);ajustarFiguras(sl);ajustarLeitura(sl);preencherVazio(sl);ajustarTexto(sl);evitarRodape(sl);apertarSePreciso(sl);},160));
+  /* a animacao de entrada dos blocos dura .65s e desloca 24px: medir antes
+     dela terminar dava leitura sobreposta ou folga a mais. Ultima passada
+     depois que tudo assentou. */
+  tLayout.push(setTimeout(()=>{ajustarFiguras(sl);ajustarLeitura(sl);preencherVazio(sl);ajustarTexto(sl);evitarRodape(sl);apertarSePreciso(sl);},760));
+  iniciarAuto(sl);
+  if(!silent && org.classList.contains('open')) markCurrent();
+}
+/* passos por clique: elementos com data-passo="n" aparecem grupo a grupo */
+function passosPend(sl){
+  const fs=[...sl.querySelectorAll('[data-passo]')].filter(e=>!e.classList.contains('on'));
+  return fs.length? Math.min(...fs.map(e=>+e.dataset.passo)) : null;
+}
+function revelarPasso(sl){
+  const g=passosPend(sl);
+  if(g===null) return false;
+  sl.querySelectorAll('[data-passo="'+g+'"]').forEach(e=>e.classList.add('on'));
+  return true;
+}
+/* passos sozinhos: <section data-autopassos="1200"> revela um grupo a cada 1,2 s,
+   sem depender do clique. A barra de espaco continua adiantando o proximo grupo;
+   quando o ultimo entra, o timer morre e o espaco passa para a proxima lamina. */
+let tAuto=null;
+function pararAuto(){ if(tAuto){ clearTimeout(tAuto); tAuto=null; } }
+function iniciarAuto(sl){
+  pararAuto();
+  if(!sl || NOFX) return;
+  const ms = +(sl.dataset.autopassos || 0);
+  if(!ms) return;
+  const passo = () => {
+    if(slides[vis()[cur]] !== sl) return pararAuto();   // ja trocou de lamina
+    if(revelarPasso(sl)) tAuto = setTimeout(passo, ms); else pararAuto();
+  };
+  tAuto = setTimeout(passo, Math.max(ms, 900));          // espera a animacao de entrada
+}
+const next=()=>{
+  const sl=slides[vis()[cur]];
+  if(sl && !NOFX && revelarPasso(sl)) return;
+  show(cur+1);
+};
+const prev=()=>{
+  const sl=slides[vis()[cur]];
+  if(sl && !NOFX){
+    const on=[...sl.querySelectorAll('[data-passo].on')];
+    if(on.length){ const g=Math.max(...on.map(e=>+e.dataset.passo));
+      sl.querySelectorAll('[data-passo="'+g+'"]').forEach(e=>e.classList.remove('on')); return; }
+  }
+  voltandoUmSlide=true;
+  try{ show(cur-1); } finally { voltandoUmSlide=false; }
+};
+
+/* ---------- organizador ---------- */
+const org=document.getElementById('org'), grid=document.getElementById('orggrid');
+let built=false;
+function txtDe(node){
+  const c=node.cloneNode(true);
+  c.querySelectorAll('small').forEach(x=>x.remove());
+  c.querySelectorAll('br').forEach(b=>b.replaceWith(' '));
+  return c.textContent.replace(/\s+/g,' ').trim();
+}
+function tituloDe(sl){
+  const t=sl.querySelector('.topbar h1'); if(t) return txtDe(t);
+  const h=sl.querySelector('h1,h2'); if(h) return txtDe(h);
+  return sl.className.replace('slide','').trim()||'slide';
+}
+const OLHO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const OLHO_OFF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7c2 0 3.8.6 5.3 1.4M23 12s-4 7-11 7c-2 0-3.8-.6-5.3-1.4"/><path d="M3 3l18 18"/></svg>';
+/* pinta os gráficos dentro da miniatura (sem depender de medidas em px) */
+function paintClone(root){
+  root.querySelectorAll('.stack .seg[data-h]').forEach(s=>{s.style.height=(+s.dataset.h)+'%';s.style.transition='none';});
+  root.querySelectorAll('.vbcol .bar[data-h]').forEach(b=>{b.style.height=((+b.dataset.h)*0.78)+'%';b.style.transition='none';});
+  root.querySelectorAll('.hbar .fill[data-w], .barrow .fill[data-w]').forEach(f=>{f.style.width=(+f.dataset.w)+'%';f.style.transition='none';});
+  root.querySelectorAll('.donut[data-pct]').forEach(d=>{
+    d.querySelectorAll('svg').forEach(x=>x.remove());
+    const pct=+d.dataset.pct, color=d.dataset.color||'var(--cyan)', C=2*Math.PI*44;
+    const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 100 100');
+    const mk=(stroke,off)=>{const c=document.createElementNS(NS,'circle');
+      c.setAttribute('cx',50);c.setAttribute('cy',50);c.setAttribute('r',44);
+      c.setAttribute('fill','none');c.setAttribute('stroke',stroke);c.setAttribute('stroke-width',9);
+      if(off!=null){c.setAttribute('stroke-linecap','round');c.style.strokeDasharray=C;c.style.strokeDashoffset=off;}
+      svg.appendChild(c);};
+    mk('#e4eaf2'); mk(color, C*(1-pct/100));
+    d.insertBefore(svg,d.firstChild);
+  });
+}
+function buildGrid(){
+  const rolagem = grid.scrollTop;        // reordenar tambem nao pode perder o lugar
+  grid.innerHTML='';
+  state.order.forEach(i=>{
+    const sl=slides[i];
+    const card=document.createElement('div');
+    card.className='ocard'+(state.hidden[i]?' off':'');
+    card.draggable=true; card.dataset.idx=i;
+    const th=document.createElement('div'); th.className='othumb';
+    const wrap=document.createElement('div');
+    wrap.className='oslide '+sl.className.replace(/\bactive\b|\bslide\b/g,'').trim();
+    const clone=sl.querySelector('.stage').cloneNode(true);
+    clone.style.transform=''; paintClone(clone);
+    wrap.appendChild(clone); th.appendChild(wrap); card.appendChild(th);
+    const bar=document.createElement('div'); bar.className='obar';
+    bar.innerHTML='<span class="onum"></span><span class="otit"></span>'+
+                  '<button class="omov" data-d="-1" title="Mover para tras">\u25C0</button>'+
+                  '<button class="omov" data-d="1" title="Mover para frente">\u25B6</button>'+
+                  '<button class="oeye" title="Ocultar/mostrar">'+(state.hidden[i]?OLHO_OFF:OLHO)+'</button>';
+    bar.querySelector('.otit').textContent=tituloDe(sl);
+    card.appendChild(bar);
+    bar.querySelectorAll('.omov').forEach(bt=>bt.addEventListener('click',ev=>{
+      ev.stopPropagation();
+      const d=+bt.dataset.d, o=state.order, a=o.indexOf(i), b=a+d;
+      if(b<0||b>=o.length) return;
+      o.splice(a,1); o.splice(b,0,i);
+      applyState(); buildGrid();
+      const alvo=grid.querySelector('.ocard[data-idx="'+i+'"]');
+      if(alvo) alvo.scrollIntoView({block:'nearest'});   // o cartao movido continua a vista
+    }));
+    bar.querySelector('.oeye').addEventListener('click',ev=>{
+      ev.stopPropagation();
+      state.hidden[i]=!state.hidden[i];
+      // atualiza so este cartao: reconstruir o grid inteiro devolvia a rolagem
+      // ao topo e obrigava a procurar de novo onde se estava editando
+      card.classList.toggle('off', state.hidden[i]);
+      ev.currentTarget.innerHTML = state.hidden[i]?OLHO_OFF:OLHO;
+      applyState(); renumber(); markCurrent();
+    });
+    th.addEventListener('click',ev=>{
+      ev.stopPropagation();                 // senao o clique vaza para o deck e avanca um slide
+      if(state.hidden[i])return;
+      const k=vis().indexOf(i); if(k>=0){show(k); closeOrg();}
+    });
+    card.addEventListener('dragstart',ev=>{card.classList.add('drag');ev.dataTransfer.setData('text/plain',i);});
+    card.addEventListener('dragend',()=>{card.classList.remove('drag');
+      grid.querySelectorAll('.over').forEach(c=>c.classList.remove('over'));});
+    card.addEventListener('dragover',ev=>{ev.preventDefault();card.classList.add('over');});
+    card.addEventListener('dragleave',()=>card.classList.remove('over'));
+    card.addEventListener('drop',ev=>{
+      ev.preventDefault(); card.classList.remove('over');
+      const from=+ev.dataTransfer.getData('text/plain'), to=i;
+      if(from===to)return;
+      const o=state.order, a=o.indexOf(from), b=o.indexOf(to);
+      o.splice(a,1); o.splice(b,0,from);
+      applyState(); buildGrid();
+    });
+    grid.appendChild(card);
+  });
+  scaleThumbs(); renumber(); markCurrent(); built=true;
+  grid.scrollTop = rolagem;
+  if(document.getElementById('verlist')) renderVers();
+}
+function scaleThumbs(){
+  grid.querySelectorAll('.othumb').forEach(th=>{
+    const w=th.clientWidth||th.parentElement.clientWidth||268;
+    th.style.height=Math.round(w*1080/1920)+'px';
+    const st=th.querySelector('.oslide')||th.querySelector('.stage');
+    if(st) st.style.transform='scale('+(w/1920)+')';
+  });
+}
+function renumber(){
+  let k=0;
+  grid.querySelectorAll('.ocard').forEach(c=>{
+    const i=+c.dataset.idx;
+    c.querySelector('.onum').textContent = state.hidden[i] ? '—' : (++k);
+  });
+}
+function markCurrent(){
+  const v=vis(), atual=v[cur];
+  grid.querySelectorAll('.ocard').forEach(c=>c.classList.toggle('cur', +c.dataset.idx===atual));
+}
+/* ---------- versões salvas (seleções de slides) ---------- */
+const VKEY='deck-vers:'+(document.title||'deck');
+/* As versoes do repositorio (versoes.json, embutido pelo build) valem em QUALQUER
+   navegador e vao para o git. As do localStorage sao as desta maquina e vencem em
+   caso de nome igual, para nao desfazer edicao recente do palestrante. */
+const versArquivo = () => (window.DECK_VERSOES && typeof window.DECK_VERSOES === 'object') ? window.DECK_VERSOES : {};
+const lerVersLocal = () => { try { return JSON.parse(localStorage.getItem(VKEY)) || {}; } catch(e) { return {}; } };
+const lerVers = () => Object.assign({}, versArquivo(), lerVersLocal());
+const gravarVers=v=>{try{localStorage.setItem(VKEY,JSON.stringify(v))}catch(e){}};
+function aplicarVersao(v){
+  const m=migrar(v);
+  if(!m){ alert('Versão inválida.'); return; }
+  state=m; applyState(); buildGrid();
+}
+function renderVers(){
+  const vs=lerVers(), lista=document.getElementById('verlist');
+  lista.innerHTML='';
+  Object.keys(vs).sort().forEach(nome=>{
+    const c=document.createElement('span'); c.className='vchip';
+    const n=vs[nome].hidden.filter(x=>!x).length;
+    c.innerHTML='<span class="t"></span><span class="x" title="Excluir">&times;</span>';
+    c.querySelector('.t').textContent=nome+' ('+n+')';
+    c.addEventListener('click',e=>{ if(e.target.classList.contains('x'))return; aplicarVersao(vs[nome]); });
+    c.querySelector('.x').addEventListener('click',e=>{
+      e.stopPropagation(); const t=lerVers(); delete t[nome]; gravarVers(t); renderVers();
+    });
+    lista.appendChild(c);
+  });
+  document.getElementById('vercnt').textContent=vis().length+' de '+N+' slides visíveis';
+}
+document.getElementById('versave').addEventListener('click',e=>{
+  e.stopPropagation();
+  const inp=document.getElementById('vername');
+  const nome=(inp.value||'').trim() || ('Seleção '+(vis().length)+' slides');
+  const vs=lerVers();
+  vs[nome]={order:state.order.slice(), hidden:state.hidden.slice(), n:N};
+  gravarVers(vs); inp.value=''; renderVers();
+});
+document.getElementById('vertodos').addEventListener('click',e=>{
+  e.stopPropagation();
+  state={order:slides.map((_,q)=>q), hidden:slides.map(()=>false)};
+  applyState(); buildGrid();
+});
+document.getElementById('verhtml').addEventListener('click',e=>{
+  e.stopPropagation();
+  const root=document.documentElement.cloneNode(true);
+  root.setAttribute('data-export','1');
+  const dk=root.querySelector('#deck'); dk.innerHTML='';
+  vis().forEach(i=>{const c=slides[i].cloneNode(true);c.classList.remove('active','oculto');dk.appendChild(c);});
+  const o2=root.querySelector('#org'); if(o2)o2.classList.remove('open');
+  const html='<!DOCTYPE html>\n'+root.outerHTML;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download='apresentacao-'+vis().length+'-slides.html';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+});
+document.getElementById('verexp').addEventListener('click',e=>{
+  e.stopPropagation();
+  const pacote={deck:document.title, slides:N, atual:{order:state.order,hidden:state.hidden}, versoes:lerVers()};
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(pacote,null,2)],{type:'application/json'}));
+  a.download='versoes-slides.json'; document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+});
+document.getElementById('verimp').addEventListener('click',e=>{e.stopPropagation();document.getElementById('verfile').click();});
+document.getElementById('verfile').addEventListener('change',ev=>{
+  const f=ev.target.files&&ev.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const p=JSON.parse(r.result);
+      if(p.versoes) gravarVers(Object.assign(lerVers(), p.versoes));
+      const m=migrar(p.atual);
+      if(m){ state=m; applyState(); }
+      buildGrid();
+    }catch(err){ alert('Arquivo inválido.'); }
+  };
+  r.readAsText(f); ev.target.value='';
+});
+
+function openOrg(){ org.classList.add('open'); if(!built)buildGrid(); else {scaleThumbs();renumber();markCurrent();} renderVers(); }
+function closeOrg(){ org.classList.remove('open'); }
+function toggleOrg(){ org.classList.contains('open')?closeOrg():openOrg(); }
+document.getElementById('orgbtn').addEventListener('click',e=>{e.stopPropagation();openOrg();hideHint();});
+document.getElementById('orgclose').addEventListener('click',e=>{e.stopPropagation();closeOrg();});
+document.getElementById('orgreset').addEventListener('click',e=>{
+  e.stopPropagation();
+  state={order:slides.map((_,q)=>q), hidden:slides.map(()=>false)};
+  applyState(); buildGrid();
+});
+addEventListener('resize',()=>{ if(org.classList.contains('open')) scaleThumbs(); });
+
+/* ---------- teclado / mouse ---------- */
+
+/* ---------- zerar a votação sem sair da apresentação (botão ou tecla Z) ---------- */
+/* Zerar pede Z duas vezes em 3 s. O confirm() do navegador parecia travamento no
+   palco e um Enter zerou a aula ao vivo (llcres, 26/10/2026). O controle remoto já
+   pede o segundo toque no celular, então o comando "zerar" chega confirmado. */
+let zerarAte = 0;
+function toastDeck(msg){
+  let t = document.getElementById('toastdeck');
+  if(!t){ t = document.createElement('div'); t.id = 'toastdeck';
+    t.style.cssText = 'position:fixed;left:50%;bottom:48px;transform:translateX(-50%);z-index:99999;background:#14111f;color:#fff;border:1px solid #e5484d;font:700 20px/1.3 system-ui,sans-serif;padding:12px 24px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.45);pointer-events:none;transition:opacity .3s';
+    document.body.appendChild(t); }
+  t.textContent = msg; t.style.opacity = 1; clearTimeout(t._h); t._h = setTimeout(()=>{ t.style.opacity = 0; }, 3000);
+}
+function zerarArmado(){
+  const agora = Date.now();
+  if(agora < zerarAte){ zerarAte = 0; return true; }
+  zerarAte = agora + 3000; toastDeck('aperte Z de novo em 3 s para zerar TUDO'); return false;
+}
+async function zerarSessao(confirmado){
+  const btn=document.getElementById('zerar');
+  if(!POLL_ON){ if(btn){btn.textContent='sem servidor'; setTimeout(()=>btn.innerHTML='&#10227; zerar votação',2200);} return; }
+  if(!confirmado && !zerarArmado()) return;
+  try{
+    const r=await fetch(POLL_BASE+'/api/reset-all?session='+encodeURIComponent(POLL_SESSION),{cache:'no-store'});
+    if(!r.ok) throw new Error();
+    if(btn){ btn.classList.add('ok'); btn.textContent='\u2713 zerado'; }
+    toastDeck('sessão zerada');
+    slides.forEach(sl=>{ if(sl.dataset.quiz) pintarQuiz(sl); });
+    pintarNuvem(slides[vis()[cur]]); pintarPerguntas(slides[vis()[cur]]);
+  }catch(e){ if(btn){ btn.textContent='falhou'; } toastDeck('não consegui zerar — confira a conexão'); }
+  finally{ setTimeout(()=>{ const b=document.getElementById('zerar'); if(b){b.classList.remove('ok'); b.innerHTML='&#10227; zerar votação';} },2600); }
+}
+document.getElementById('zerar')?.addEventListener('click', ()=>zerarSessao());
+
+/* cortina: o passador (seta/espaco) puxa a cortina em etapas antes de trocar de lamina */
+const CORTINA_PASSOS=[88,60,32,2];
+function resetCortinas(sl){
+  if(!sl) return;
+  sl.querySelectorAll('.cortina').forEach(c=>{ c.dataset.cpasso=0; c.style.setProperty('--x',CORTINA_PASSOS[0]+'%'); });
+}
+function cortinaPasso(dir){
+  const sl=document.querySelector('#deck .slide.active'); if(!sl) return false;
+  const c=sl.querySelector('.cortina'); if(!c) return false;
+  let k=+(c.dataset.cpasso||0);
+  if(dir>0){ if(k>=CORTINA_PASSOS.length-1) return false; k++; }
+  else { if(k<=0) return false; k--; }
+  c.dataset.cpasso=k; c.style.setProperty('--x',CORTINA_PASSOS[k]+'%'); return true;
+}
+addEventListener('keydown',e=>{
+  // digitando num campo (nome da versao, busca): nenhum atalho de letra dispara,
+  // senao escrever "o" fechava o organizador no meio do nome
+  const alvo=e.target;
+  if(alvo && alvo.closest && alvo.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"])')) return;
+  if(window.__irAberto) return;                            // o campo de busca cuida das proprias teclas
+  if((e.key==='g'||e.key==='G'||e.key==='/') && window.irAbrir){e.preventDefault();window.irAbrir();hideHint();return;}
+  if(e.key==='o'||e.key==='O'){e.preventDefault();toggleOrg();hideHint();return;}
+  if(e.key==='e'||e.key==='E'){e.preventDefault();edToggle();hideHint();return;}
+  if(e.key==='n'||e.key==='N'){e.preventDefault();numeros();hideHint();return;}
+  if(org.classList.contains('open')){ if(e.key==='Escape')closeOrg(); return; }
+  if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();if(!cortinaPasso(1))next();hideHint();}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();if(!cortinaPasso(-1))prev();hideHint();}
+  else if(e.key==='Home'){show(0);}
+  else if(e.key==='End'){show(vis().length-1);}
+  else if(e.key==='f'||e.key==='F'){toggleFS();}
+  else if(e.key==='z'||e.key==='Z'){zerarSessao();}
+  else if(e.key==='j'||e.key==='J'){reabrirJanelas();}
+  else if(e.key==='w'||e.key==='W'){modoOnline(!document.body.classList.contains('online'));}
+});
+addEventListener('click',e=>{
+  if(org.classList.contains('open'))return;
+  if(window.__irAberto)return;                  // o "Ir para" cuida dos proprios cliques
+  if(document.body.classList.contains('editando'))return;   // editando texto: clique nao vira lamina
+  if(e.target.closest('#irpara'))return;        // clique que fechou o dialogo nao avanca lamina
+  if(e.target.closest('#counter'))return;       // clique no numero da lamina so o desliga
+  if(e.target.closest('a,button,input,label'))return;
+  next(); hideHint();
+});
+function hideHint(){hint.classList.add('hidden');}
+setTimeout(hideHint,6500);
+function toggleFS(){ if(!document.fullscreenElement)document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); }
+
+/* ============================================================
+   EDIÇÃO DE TEXTO NO PALCO — tecla E
+   Para corrigir uma palavra na véspera sem abrir o editor. Em modo de edição,
+   clique num texto, corrija, clique fora (ou Enter) para gravar; Esc desiste.
+   A troca vai para a PART de origem (parts/<data-id>.html) pelo servidor local
+   (POST /editar) e também para o deck.html, para recarregar não desfazer.
+   Aberta por file:// (sem servidor), a troca fica guardada no navegador, é
+   reaplicada ao abrir e enviada na próxima vez que a aula subir pelo
+   "Abrir aula.command". Ideia da skill frontend-slides (zarazhangrui),
+   adaptada: lá o deck é um arquivo só; aqui cada lâmina tem arquivo próprio,
+   e uma edição que não voltasse para ele morria no próximo build.sh.
+   Só o TEXTO muda (contenteditable=plaintext-only): nenhuma marcação nova.
+   ============================================================ */
+const EDKEY='deck-edicoes:'+location.pathname;
+const edbar=document.getElementById('edbar');
+const edEmAula=/^https?:/.test(location.protocol);       // servido pelo servidor_aula.py
+const edLerPend=()=>{try{return JSON.parse(localStorage.getItem(EDKEY))||[]}catch(_){return []}};
+const edGravarPend=v=>{try{localStorage.setItem(EDKEY,JSON.stringify(v))}catch(_){}};
+function edMsg(txt,cls){const m=edbar.querySelector('.m');m.textContent=txt;m.className='m '+(cls||'');}
+/* o que NAO se edita no palco: figura, QR, selo de procedencia (e o que a lamina marcar) */
+const edPula='style,script,svg,.figwrap,.qr,.badge-pdf,.badge-abs,.badge-did,.badge-reg,[data-noedit]';
+/* todos os nos de texto do elemento, na ordem do arquivo: um <b> dentro do <li> conta */
+function edNos(el){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),o=[];let n;while((n=w.nextNode()))o.push(n);return o;}
+function edMarcar(lig){
+  slides.forEach(sl=>sl.querySelectorAll('.stage *').forEach(el=>{
+    const ok=lig && !el.closest(edPula) && [...el.childNodes].some(n=>n.nodeType===3&&n.textContent.trim());
+    if(ok) el.setAttribute('data-edit',''); else el.removeAttribute('data-edit');
+  }));
+}
+function edToggle(lig){
+  const on = lig===undefined ? !document.body.classList.contains('editando') : !!lig;
+  document.body.classList.toggle('editando',on);
+  edMarcar(on); if(on) numeros(true);              // editando, os numeros ajudam a achar a part
+  if(on){ const p=edLerPend().length;
+    edMsg(p?`${p} edição(ões) guardadas no navegador, ainda não gravadas na part`:'clique num texto · Enter ou clique fora grava · Esc desiste · setas trocam de lâmina', p?'aviso':''); }
+  else if(document.activeElement && document.activeElement.isContentEditable) document.activeElement.blur();
+}
+window.edToggle=edToggle;
+function edRefazer(sl){ ajustarTitulo(sl);ajustarFiguras(sl);ajustarLeitura(sl);preencherVazio(sl);ajustarTexto(sl);evitarRodape(sl);apertarSePreciso(sl); }
+/* vira editavel no mousedown, ANTES de o clique cair: assim o cursor vai para onde se clicou */
+addEventListener('mousedown',e=>{
+  if(!document.body.classList.contains('editando'))return;
+  const el=e.target.closest('[data-edit]'); if(!el||el.isContentEditable)return;
+  el.__edOrig=edNos(el).map(n=>n.textContent);
+  el.setAttribute('contenteditable','plaintext-only'); document.body.classList.add('ed-digitando');
+  el.addEventListener('keydown',edTecla); el.addEventListener('blur',edFechar,{once:true});
+},true);
+function edTecla(e){
+  if(e.key==='Enter'){e.preventDefault();this.blur();}
+  else if(e.key==='Escape'){e.preventDefault();this.__edDesiste=true;this.blur();}
+  e.stopPropagation();                                    // as setas nao trocam de lamina no meio da palavra
+}
+function edFechar(){
+  const el=this, sl=el.closest('.slide'); el.removeEventListener('keydown',edTecla);
+  el.removeAttribute('contenteditable'); document.body.classList.remove('ed-digitando');
+  const orig=el.__edOrig||[], agora=edNos(el).map(n=>n.textContent);
+  if(el.__edDesiste || agora.length!==orig.length){
+    /* desistiu, ou apagou/criou um no de texto (nao ha como mapear para a part): volta ao original */
+    if(agora.length===orig.length) edNos(el).forEach((n,i)=>n.textContent=orig[i]);
+    else { el.textContent=''; orig.forEach(t=>el.appendChild(document.createTextNode(t))); }
+    if(!el.__edDesiste) edMsg('apagar o texto inteiro não grava: corrija por partes, mantendo a marcação','erro');
+    el.__edDesiste=false; edRefazer(sl); return;
+  }
+  const eds=orig.map((o,i)=>({id:sl.dataset.id,old:o,new:agora[i]})).filter(x=>x.old!==x.new);
+  edRefazer(sl);
+  if(eds.length) edEnviar(eds);
+}
+async function edEnviar(eds){
+  if(!edEmAula){ edGravarPend(edLerPend().concat(eds));
+    edMsg(`guardado no navegador (${edLerPend().length}) — vai para a part quando a aula abrir pelo "Abrir aula.command"`,'aviso'); return; }
+  try{
+    const r=await fetch('/editar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edicoes:eds})});
+    const d=await r.json(); const falhas=(d.resultados||[]).filter(x=>!x.ok);
+    if(!falhas.length) edMsg(`gravado em parts/${eds[0].id}.html e no deck.html · segunda tela e PDF: rodar ./build.sh`,'ok');
+    else edMsg('não gravado: '+falhas.map(f=>f.motivo).join(' · ')+' — a tela mostra a troca só até recarregar','erro');
+  }catch(_){
+    edGravarPend(edLerPend().concat(eds));
+    edMsg('servidor não respondeu: guardado no navegador, envio na próxima abertura','aviso');
+  }
+}
+/* pendencias de uma abertura por file://: reaplica na tela e, havendo servidor, grava e limpa */
+(async function(){
+  const pend=edLerPend(); if(!pend.length)return;
+  pend.forEach(p=>{ const sl=slides.find(s=>s.dataset.id===p.id); if(!sl)return;
+    const n=edNos(sl).find(x=>x.textContent===p.old); if(n) n.textContent=p.new; });
+  if(!edEmAula)return;
+  try{
+    const r=await fetch('/editar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({edicoes:pend})});
+    const d=await r.json(); const ok=(d.resultados||[]).filter(x=>x.ok).length;
+    edGravarPend([]);                 // o que falhou ja foi reportado no console; nao fica preso para sempre
+    console.info('edições guardadas no navegador gravadas na part: '+ok+'/'+pend.length, d);
+  }catch(_){}
+})();
+
+/* ---------- numeros das laminas (tecla N) ----------
+   Mostra "12 / 98 · n-lmind" no canto: a posicao na ordem e o nome da part, que e o que se
+   precisa para editar. Fica guardado no navegador; no palco, desligado (clicar no numero desliga). */
+const NUMKEY='deck-numeros';
+function numeros(lig){
+  const on = lig===undefined ? !document.body.classList.contains('numeros') : !!lig;
+  document.body.classList.toggle('numeros',on); try{localStorage.setItem(NUMKEY,on?'1':'0')}catch(_){}
+  const v=vis(), sl=slides[v[cur]]; if(sl) counter.textContent=(cur+1)+' / '+v.length+(on?' · '+(sl.dataset.id||''):'');
+}
+window.numeros=numeros;
+counter.addEventListener('click',()=>numeros(false));
+try{ if(localStorage.getItem(NUMKEY)==='1') document.body.classList.add('numeros'); }catch(_){}
+
+/* ---------- impressão ---------- */
+addEventListener('beforeprint',()=>{
+  document.documentElement.classList.add('nofx');
+  slides.forEach((sl,i)=>{ if(!state.hidden[i]){sl.classList.add('active');paintChart(sl);} });
+});
+addEventListener('afterprint',()=>{
+  if(!NOFX)document.documentElement.classList.remove('nofx');
+  const v=vis();
+  slides.forEach((sl,i)=>{ if(i!==v[cur]) sl.classList.remove('active'); });
+});
+if(NOFX) addEventListener('load',()=>slides.forEach(paintChart));
+
+window.ajustarTodasFiguras = () => slides.forEach(ajustarFiguras);
+window.ajustarFiguraDoSlide = ajustarFiguras;
+
+/* ---------- deep-link (#N = posição na ordem visível) ---------- */
+const fromHash=()=>{const n=parseInt(location.hash.replace('#',''),10);return isNaN(n)?0:n-1;};
+addEventListener('hashchange',()=>show(fromHash()));
+applyState();
+/* ?v=Nome abre direto numa versão salva */
+(function(){
+  const m=/[?&]v=([^&#]+)/.exec(location.search);
+  if(!m)return;
+  const nome=decodeURIComponent(m[1]).replace(/\+/g,' ');
+  const mv=migrar(lerVers()[nome]);
+  if(mv){
+    state=mv;
+    state.order.forEach(i=>deckEl.appendChild(slides[i]));
+    slides.forEach((sl,i)=>sl.classList.toggle('oculto', state.hidden[i]));
+    fit(); save();
+  }
+})();
+show(fromHash());
+if(/[?&]org=1/.test(location.search)) openOrg();
+</script>
+
+<script>
+/* ============================================================
+   SEGUNDA TELA — barras do quiz, nuvem de ideias e publicação
+   do slide atual para os celulares da plateia.
+   POLL_BASE e POLL_SESSION são reescritos por build_qr.py.
+   ============================================================ */
+const POLL_BASE = "";   /* preenchido por build_qr.py --base=https://... */
+const POLL_SESSION = "default";
+/* out-2026: file:// aberto por pessoa publica (o standalone mandado por e-mail/Drive é aula ao vivo); só o navegador automatizado do QA/render (navigator.webdriver) fica fora da nuvem */ const POLL_ON = /^https?:/.test(POLL_BASE) && !(location.protocol === 'file:' && navigator.webdriver);   /* file:// = script de QA/render (headless), nunca aula ao vivo — sem isso cada rodada de render_lamina.py/qa_laminas.py batia na nuvem e ajudou a estourar a cota do Redis (set-2026) */
+
+/* id da aula no app (o d= dos QR): o placar acha o gabarito por ele */
+const POLL_DECK = (()=>{ try{ return new URL((window.QR_URLS||{})["segunda-tela"]).searchParams.get("d") || POLL_SESSION; }
+                         catch(e){ return POLL_SESSION; } })();
+let ultimoEstado = "";
+/* Aviso no telão e pulso (Recife, 22/10/2026: o Wi-Fi do local caiu no meio da aula,
+   os celulares pararam na lâmina 27 e nada avisou o palestrante). Com os envios falhando
+   há 6 s seguidos aparece o selo vermelho; o deck reenvia a lâmina a cada 8 s (`pulso`) para o
+   celular saber que o telão está vivo e, se ele sumir, abrir a lista de votações. */
+let stOk = 0, stFalha = 0, stHttp = 0, stCaiu = false;
+function sinalSegundaTela(){
+  if(!POLL_ON || document.documentElement.hasAttribute('data-export')) return;
+  let el = document.getElementById('st-sinal');
+  if(!el){
+    el = document.createElement('div'); el.id = 'st-sinal';
+    el.style.cssText = 'position:fixed;top:14px;right:14px;z-index:90;max-width:520px;padding:10px 16px;border-radius:10px;font:700 15px/1.35 system-ui,sans-serif;color:#fff;display:none;box-shadow:0 4px 14px rgba(0,0,0,.35)';
+    document.body.appendChild(el);
+  }
+  if(stFalha && Date.now() - stFalha > 6000){
+    stCaiu = true; el.style.background = '#b3261e'; el.style.display = 'block';
+    el.textContent = stHttp ? 'Segunda tela: o servidor não respondeu ('+stHttp+'). A plateia não recebe as lâminas.'
+                            : 'Segunda tela sem conexão: a plateia não recebe as lâminas. Troque a rede (4G do celular).';
+  }else if(stCaiu){
+    stCaiu = false; el.style.background = '#0a7a72'; el.style.display = 'block';
+    el.textContent = 'Segunda tela reconectada';
+    setTimeout(()=>{ if(!stCaiu) el.style.display = 'none'; }, 3000);
+  }
+}
+setInterval(sinalSegundaTela, 2000);
+
+/* o espelho da lamina fica numa funcao propria: o gerador do slides.json chama a
+   mesma rotina, para que celular e telao nunca divirjam */
+function estadoDaLamina(sl){
+  if(!sl) return null;
+  const txt = el => { const e = sl.querySelector(el); return e ? (e.innerText||"").replace(/\s+/g," ").trim() : ""; };
+  const pontos = [...sl.querySelectorAll('.stage .card li, .stage .callout li, .stage .casebox p')]
+      .map(e => (e.innerText||"").replace(/\s+/g," ").trim()).filter(Boolean).slice(0,6);
+  const numeros = [...sl.querySelectorAll('.statcard, .chip, .bn')].map(e => {
+      const v = e.querySelector('.num, .v, .v small, .dv'); const k = e.querySelector('.lab, .k');
+      const vv = v ? (v.innerText||"").replace(/\s+/g," ").trim() : "";
+      const kk = k ? (k.innerText||"").replace(/\s+/g," ").trim() : "";
+      return vv ? {v: vv, k: kk} : null; }).filter(Boolean).slice(0,4);
+  /* posicao NA ORDEM EM QUE A AULA VAI SER DADA, nao o indice de origem */
+  const ordem = vis(); const idx = ordem.indexOf(slides.indexOf(sl));
+  let bloco = "Abertura";
+  for(const x of ordem.map(i=>slides[i])){ if(x===sl) break;
+    if(x.classList.contains('secao')){ const hh=x.querySelector('h2');
+      if(hh) bloco=(hh.innerHTML||"").replace(/<br\s*\/?>/gi," ").replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim(); } }
+  return { id: sl.dataset.id || "", study: sl.dataset.card || "", quiz: sl.dataset.quiz || "", bloco: bloco,
+           wordq: sl.dataset.wordq || "", guess: sl.dataset.guess || "",
+           titulo: txt('.topbar h1') || txt('.quiz h2') || txt('.mfq .afirm') || txt('.secao h2')
+                   || txt('.impacto .frase') || txt('.capa h1') || txt('.bignum h2') || txt('.stage h1') || txt('.stage h2'),
+           sub: txt('.sub') || txt('.secao .txt'),
+           chave: txt('.leitura .t'),
+           pontos: pontos, numeros: numeros,
+           fase: txt('.selo-fase i'), tag: txt('.topbar .tag'),
+           nota: sl.dataset.nota || "",
+           links: (()=>{ try{ return sl.dataset.links ? JSON.parse(sl.dataset.links) : []; }catch(e){ return []; } })(),
+           cortina: (typeof lerCortina==='function' ? lerCortina(sl) : null),
+           n: idx >= 0 ? idx+1 : 0, total: ordem.length };
+}
+/* Um POST por vez, e sempre o ESTADO MAIS NOVO. Antes, passar tres laminas depressa
+   disparava tres POST simultaneos e o servidor podia gravar o penultimo por ultimo —
+   os celulares da plateia ficavam numa lamina que ja passou. E, se o POST falhasse,
+   `ultimoEstado` ja tinha sido marcado como enviado: quando o servidor voltava, o deck
+   nao republicava a lamina atual ate o palestrante trocar de lamina de novo. */
+let publicando = false, pendente = null, compAberta = "", compFechar = "";
+async function publicarEstado(sl){
+  if(!POLL_ON || !sl) return;
+  const est = estadoDaLamina(sl); if(!est) return;
+  /* modo competição: a pergunta marcada abre a contagem do tempo no servidor e a
+     saída da lâmina fecha (voto depois disso não pontua); o placar avisa o celular */
+  if(sl.dataset.quiz && sl.hasAttribute("data-competicao")) est.comp = sl.dataset.quiz;
+  if(sl.classList.contains("placar")) est.placar = sl.dataset.placar || "*";
+  const chave = JSON.stringify(est);
+  // pulso: mesma lâmina, reenvia a cada 8 s — só com a aba visível, senão uma aba esquecida
+  // (edição, standalone antigo) disputaria com o telão a lâmina mostrada nos celulares
+  if(chave === ultimoEstado && (Date.now() - stOk < 8000 || document.hidden)) return;
+  if(compAberta && compAberta !== (est.comp||"")) compFechar = compAberta;
+  compAberta = est.comp || "";
+  pendente = est;
+  if(publicando) return;                       // o laco abaixo pega o mais recente
+  publicando = true;
+  try{
+    while(pendente){
+      const env = pendente; pendente = null;
+      const k = JSON.stringify(env);
+      const fx = compFechar;
+      try{
+        const r = await fetch(POLL_BASE+"/api/state",{method:"POST",signal:AbortSignal.timeout(6000),headers:{"Content-Type":"application/json"},
+              body:JSON.stringify({session:POLL_SESSION, pulso:1, ...env, ...(fx ? {compFecha: fx} : {})})});
+        ultimoEstado = (r && r.ok) ? k : "";
+        if(r && r.ok){ stOk = Date.now(); stFalha = 0; stHttp = 0; } else { stHttp = r ? r.status : 0; if(!stFalha) stFalha = Date.now(); }
+        if(r && r.ok && fx === compFechar) compFechar = "";   // falhou: o proximo ciclo (2,5 s) reenvia
+      }catch(e){ ultimoEstado = ""; stHttp = 0; if(!stFalha) stFalha = Date.now(); }
+    }
+  } finally { publicando = false; }
+}
+
+async function pintarQuiz(sl){
+  if(!POLL_ON || !sl || !sl.dataset.quiz) return;
+  try{
+    const r = await fetch(POLL_BASE+"/api/results?session="+encodeURIComponent(POLL_SESSION)+"&slide="+sl.dataset.quiz,{cache:"no-store"});
+    const d = await r.json();
+    const total = d.total || 0;
+    /* tudo aqui vem do servidor: uma resposta sem `counts`, ou uma alternativa sem
+       .fill/.pct, jogava excecao e as DEMAIS barras da lamina nao eram pintadas */
+    (d.counts || []).forEach(c=>{
+      const opt = sl.querySelector('.opt[data-k="'+c.o+'"], .mfb[data-k="'+c.o+'"]'); if(!opt) return;
+      const pct = total ? Math.round(c.n/total*100) : 0;
+      const fill = opt.querySelector(".fill");
+      if(fill){
+        fill.style.width = pct+"%";
+        // sem voto a barra tem largura zero: a borda direita viraria um risco
+        // ciano solto na frente do texto da alternativa
+        fill.style.borderRightWidth = pct > 0 ? "3px" : "0";
+      }
+      const pc = opt.querySelector(".pct");
+      if(pc) pc.textContent = total ? pct+"%" : "—";
+    });
+    const t = sl.querySelector(".tot");
+    if(t) t.textContent = total ? (total + " voto" + (total===1?"":"s")) : "aguardando votos…";
+  }catch(e){}
+}
+
+const CORES_NUVEM = ["#3fb9d6","#cfedf4","#8fd4e6","#9fc6dd","#6fd7a5"];
+const VAZIO_PERG = '<div class="vazio">'
+  + '<div class="g"><i></i><b style="width:72%"></b></div>'
+  + '<div class="g"><i></i><b style="width:56%"></b></div>'
+  + '<div class="g"><i></i><b style="width:64%"></b></div>'
+  + '<div class="dica"><span class="seta">&#8594;</span> ningu&eacute;m precisa se identificar — pode mandar durante a fala</div>'
+  + '</div>';
+let topoPerg = null;
+/* Selo global: a fila só é visível na lâmina de perguntas, e a plateia manda pergunta
+   a aula inteira. Sem este aviso dá para terminar a aula sem saber que chegou alguma. */
+const pergBadge = document.createElement("button");
+pergBadge.id = "pergbadge"; pergBadge.type = "button"; pergBadge.hidden = true;
+pergBadge.title = "Ir para a lâmina de perguntas (tecla P)";
+pergBadge.addEventListener("click", irParaPerguntas);
+document.body.appendChild(pergBadge);
+function irParaPerguntas(){
+  const vis=[...document.querySelectorAll("#deck .slide")].filter(s=>!s.classList.contains("oculto"));
+  const k=vis.findIndex(s=>s.id==="s-perguntas");
+  if(k>=0 && typeof window.show==="function") window.show(k);
+}
+addEventListener("keydown",e=>{
+  if(e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable=""],[contenteditable="true"]')) return;
+  if((e.key==="p"||e.key==="P") && !e.metaKey && !e.ctrlKey && !e.altKey){ e.preventDefault(); irParaPerguntas(); }
+});
+function marcarBadge(n, naLamina){
+  if(!n || naLamina){ pergBadge.hidden = true; return; }
+  pergBadge.innerHTML = n + " pergunta" + (n===1?"":"s") + " na fila <small>tecla P</small>";
+  pergBadge.hidden = false;
+}
+async function pintarPerguntas(sl){
+  if(!POLL_ON) return;
+  const naLamina = !!sl && sl.id==="s-perguntas";
+  const esc = t => String(t).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+  try{
+    const r=await fetch(POLL_BASE+"/api/questions?session="+encodeURIComponent(POLL_SESSION),{cache:"no-store"});
+    const {questions=[]}=await r.json();
+    const pend=questions.filter(q=>!q.done).sort((a,b)=>(b.ts||0)-(a.ts||0));
+    marcarBadge(pend.length, naLamina);
+    if(!naLamina) return;
+    const ativas=pend.slice(0,6);
+    const box=sl.querySelector("#perg-live"), tot=sl.querySelector("#perg-tot");
+    if(!box) return;
+    if(!ativas.length){
+      if(tot) tot.textContent="aguardando perguntas…";
+      if(box.dataset.sig!=="0"){ box.dataset.sig="0"; box.dataset.n="0"; box.innerHTML=VAZIO_PERG; }
+      topoPerg=null; return;
+    }
+    if(tot) tot.textContent=ativas.length+" pergunta"+(ativas.length===1?"":"s")+" na fila";
+    const sig=ativas.map(q=>(q.id||"")+"|"+(q.t||q.text||"")).join("~");
+    if(box.dataset.sig===sig) return;              // sem novidade: não repinta (evita piscar)
+    const topo=(ativas[0].id||ativas[0].t||ativas[0].text||"");
+    const chegou = topoPerg!==null && topo!==topoPerg;   // a de cima é nova
+    box.dataset.sig=sig; box.dataset.n=String(ativas.length); topoPerg=topo;
+    box.innerHTML=ativas.map((q,i)=>'<div class="q'+(i===0&&chegou?' novo':'')+'" style="--d:'+(i*0.07).toFixed(2)+'s">'
+      + (i===0&&chegou?'<span class="tag">nova</span>':'')
+      + '<div class="i">'+(i+1)+'</div><div class="t">'+esc(q.t||q.text||"")+'</div></div>').join("");
+  }catch(e){
+    /* sem rede o fetch morre calado e a lâmina fica "aguardando perguntas…" para sempre:
+       avisa, senão parece que ninguém perguntou. */
+    if(!naLamina) return;
+    const tot=sl.querySelector("#perg-tot");
+    if(tot) tot.textContent="sem conexão com o app — as perguntas não chegam aqui";
+  }
+}
+async function pintarNuvem(sl){
+  if(!POLL_ON || !sl || sl.id !== "s-nuvem") return;
+  try{
+    const r = await fetch(POLL_BASE+"/api/words?session="+encodeURIComponent(POLL_SESSION),{cache:"no-store"});
+    const {words=[]} = await r.json();
+    const box = sl.querySelector("#nuvem-live"); if(!box) return;
+    /* só repinta quando a lista muda — repintar a cada ciclo faz as palavras "pularem" */
+    const sig = words.map(w=>w.w+"|"+w.n).join("~");
+    if(box.dataset.sig === sig) return;
+    box.dataset.sig = sig;
+    const max = Math.max(1, ...words.map(w=>w.n));
+    /* tamanho cresce com o nº de citações: 1 voto = pequeno (32px), o campeão chega a 120px.
+       (n-1)/(max-1): com todo mundo em 1 voto, tudo fica pequeno — antes n/max deixava tudo gigante. */
+    const tam = n => 32 + Math.round(88*Math.sqrt(max>1 ? (n-1)/(max-1) : 0));
+    /* as mais citadas no MEIO da nuvem (centro-fora), não numa fileira em cima */
+    const ord = []; words.slice(0,32).forEach((w,i)=>{ if(i%2) ord.push([w,i]); else ord.unshift([w,i]); });
+    box.innerHTML = ord.map(([w,i])=>{
+      const cor = CORES_NUVEM[i%CORES_NUVEM.length];
+      const forte = w.n===max && max>1;
+      return '<span style="font-size:'+tam(w.n)+'px;font-weight:'+(forte?900:(w.n>1?800:650))
+        +';line-height:1.02;color:'+(forte?'#fff':cor)+';opacity:'+(w.n>1?1:.62)
+        +(forte?';text-shadow:0 0 34px rgba(63,185,214,.55)':'')+'">'
+        + String(w.w).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])) + '</span>';
+    }).join("");
+    const tot = sl.querySelector("#nuvem-tot");
+    const n = words.reduce((a,w)=>a+w.n,0);
+    if(tot) tot.textContent = n ? (n + " palavra" + (n===1?"":"s") + " enviada" + (n===1?"":"s")) : "aguardando respostas…";
+  }catch(e){}
+}
+
+async function pintarEstimativa(sl){
+  if(!POLL_ON || !sl || !sl.dataset.guess) return;
+  try{
+    const r=await fetch(POLL_BASE+"/api/guesses?session="+encodeURIComponent(POLL_SESSION)+"&slide="+sl.dataset.guess,{cache:"no-store"});
+    const d=await r.json(); const hist=sl.querySelector(".esthist"); if(!hist) return;
+    const min=parseFloat(sl.dataset.min||0), max=parseFloat(sl.dataset.max||30), NB=30;
+    const bins=new Array(NB).fill(0);
+    (d.values||[]).forEach(v=>{const k=Math.max(0,Math.min(NB-1,Math.floor((v-min)/(max-min)*NB)));bins[k]++;});
+    const mx=Math.max(...bins,1);
+    hist.innerHTML=bins.map(n=>'<div class="b" style="height:'+(n/mx*100)+'%"></div>').join("");
+    const tt=sl.querySelector(".tot");
+    if(tt) tt.textContent=(d.n||0)?(d.n+" estimativa"+(d.n===1?"":"s")):"aguardando estimativas…";
+  }catch(e){}
+}
+/* cortina: arrastar em qualquer .cortina */
+document.querySelectorAll(".cortina").forEach(c=>{
+  let drag=false;
+  const move=x=>{const r=c.getBoundingClientRect();const p=Math.max(2,Math.min(98,(x-r.left)/r.width*100));c.style.setProperty("--x",p+"%");};
+  c.addEventListener("pointerdown",e=>{drag=true;move(e.clientX);e.preventDefault();});
+  addEventListener("pointermove",e=>{if(drag)move(e.clientX);});
+  addEventListener("pointerup",()=>drag=false);
+});
+/* R revela o dado real da estimativa e a resposta do mito/fato da lâmina ativa */
+addEventListener("keydown",e=>{
+  if(e.target && e.target.closest && e.target.closest('input,textarea,select,[contenteditable=""],[contenteditable="true"]')) return;
+  if((e.key==="r"||e.key==="R") && !e.metaKey && !e.ctrlKey){
+    const sl=document.querySelector("#deck .slide.active"); if(!sl) return;
+    /* alterna: mostra e esconde de novo, para poder voltar ao palpite da plateia */
+    const real=sl.querySelector(".estreal");
+    if(real){ const vis = real.style.opacity==="1"; real.style.opacity = vis ? "0" : "1"; }
+    const rev=sl.querySelector(".mfrev"); if(rev){ rev.classList.toggle("on"); }
+  }
+});
+
+const _showCortina = window.show;
+if(typeof _showCortina === 'function'){
+  window.show = function(){ const r=_showCortina.apply(this,arguments);
+    const _sl=document.querySelector('#deck .slide.active');
+    resetCortinas(_sl); resetRevelacoes(_sl); return r; };
+}
+/* ao entrar numa lâmina, o dado real volta a ficar escondido: a plateia estima antes de ver */
+function resetRevelacoes(sl){
+  if(!sl) return;
+  sl.querySelectorAll('.estreal').forEach(e=>{ e.style.opacity='0'; });
+  sl.querySelectorAll('.mfrev').forEach(e=>{ e.classList.remove('on'); });
+}
+addEventListener('load',()=>{ const sl=document.querySelector('#deck .slide.active');
+  resetCortinas(sl); resetRevelacoes(sl); });
+
+/*AV-INI — fonte única dos avatares da competição (gerado por tools/gerar_avatares.py). Copiada entre
+  estes marcadores em index.html e nos shells do deck molla (tools/sync_avatares.py). Imagens cartoon 2D
+  (app do Gemini) em /avatares/<id>.webp, servidas pelo app; no deck vêm de POLL_BASE. Servidor: só id e
+  nome (api/_apelido.js). */
+const AVATARES = [
+  {id:"smudge",nome:"Smudge Cell"},
+  {id:"gravata",nome:"Linfocitão de Gravata"},
+  {id:"plaqueta",nome:"Plaqueta Grudenta"},
+  {id:"blasto",nome:"Blasto Rebelde"},
+  {id:"cart",nome:"CAR-T de Capa"},
+  {id:"biesp",nome:"Biespecífico Abraçador"},
+  {id:"veneto",nome:"Venetoclax"},
+  {id:"ibru",nome:"Ibrutinibe"},
+  {id:"ritux",nome:"Rituximabe"},
+  {id:"ciclofo",nome:"Ciclofosfamida"},
+  {id:"talido",nome:"Talidomida"},
+  {id:"hidroxi",nome:"Hidroxiureia"},
+  {id:"dauno",nome:"Daunorrubicina"},
+  {id:"arac",nome:"Ara-C"},
+  {id:"vincri",nome:"Vincristina"},
+  {id:"acalab",nome:"Acalabrutinibe"},
+  {id:"zanub",nome:"Zanubrutinibe"},
+  {id:"obinu",nome:"Obinutuzumabe"},
+  {id:"lenalido",nome:"Lenalidomida"},
+  {id:"dara",nome:"Daratumumabe"},
+  {id:"isa",nome:"Isatuximabe"},
+  {id:"ehrlich",nome:"Ehrlich"},
+  {id:"virchow",nome:"Virchow"},
+  {id:"wintrobe",nome:"Wintrobe"},
+  {id:"landsteiner",nome:"Landsteiner"},
+  {id:"thomas",nome:"Donnall Thomas"},
+  {id:"knockout",nome:"Camundongo Knockout"},
+  {id:"coelho",nome:"Coelho de Anticorpo"},
+  {id:"zebrafish",nome:"Zebrafish"},
+  {id:"drosofila",nome:"Mosca-da-fruta"},
+  {id:"cobaia",nome:"Porquinho-da-índia"},
+  {id:"rhesus",nome:"Macaco Rhesus"}
+];
+function avImg(id,px){
+  const a=AVATARES.find(x=>x.id===id); if(!a) return "";
+  const base=(typeof POLL_BASE==="string"?POLL_BASE:"");
+  return '<img class="av" src="'+base+'/avatares/'+a.id+'.webp" width="'+px+'" height="'+px+'" alt="'+a.nome+'" loading="lazy" decoding="async" style="flex:none;display:block;border-radius:50%;object-fit:cover">';
+}
+/* apelido gravado = "idDoAvatar|Nome"; valor antigo (sem |) vira só o nome */
+function avParse(s){ s=String(s||""); const i=s.indexOf("|"); return i<0?{avatar:"",nome:s}:{avatar:s.slice(0,i),nome:s.slice(i+1)}; }
+/*AV-FIM*/
+
+/* PLACAR (modo competição): <section class="slide placar" data-placar="q1,q2">.
+   Busca /api/leaderboard e anima pódio (3 primeiros) + lista até o 10º. Só repinta
+   quando o placar muda; ao entrar de novo na lâmina, a animação recomeça. */
+function placarHTML(d){
+  const top = d.top || [];
+  if(!top.length) return '<div class="vazio-placar">aguardando respostas…</div>';
+  const max = Math.max(1, ...top.map(x=>x.pontos));
+  const alt = [0, 100, 74, 54];                       /* altura do degrau em % por posição */
+  const deg = (x,i)=> x ? '<div class="degrau p'+(i+1)+'">'+(x.avatar?'<div class="avt">'+avImg(x.avatar,i===0?140:116)+'</div>':'')+'<div class="nome">'+escP(x.apelido)+'</div>'
+      + '<div class="pts">'+x.pontos+' pts · '+x.acertos+' ✓</div>'
+      + '<div class="bloco" data-h="'+Math.round(alt[i+1]*0.62)+'">'+x.pos+'º</div></div>' : '<div class="degrau"></div>';
+  const podio = '<div class="podio">'+deg(top[1],1)+deg(top[0],0)+deg(top[2],2)+'</div>';
+  const resto = top.slice(3).map((x,i)=>'<div class="linha" style="transition-delay:'+(1.2+i*0.09).toFixed(2)+'s">'
+      + '<div class="fill" data-w="'+Math.round(x.pontos/max*100)+'"></div>'
+      + '<b>'+x.pos+'º</b>'+(x.avatar?avImg(x.avatar,56):'')+'<span>'+escP(x.apelido)+'</span><i>'+x.pontos+'</i></div>').join("");
+  return podio + '<div class="lista">'+resto+'</div>';
+}
+const escP = t => String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let placarEm = null;
+/* tecla J: apaga só as janelas de abertura das perguntas competitivas (votos e avatares
+   ficam). Serve quando o placar acusa "votos fora da janela" — ensaio/teste antes da aula. */
+async function reabrirJanelas(){
+  if(!POLL_ON){ toastDeck('sem servidor da segunda tela'); return; }
+  try{
+    const r = await fetch(POLL_BASE+'/api/state?session='+encodeURIComponent(POLL_SESSION)+'&op=limpar-abertura',{cache:'no-store'});
+    if(!r.ok) throw new Error();
+    toastDeck('janelas reabertas — placar recalculado');
+    const sl = document.querySelector('#deck .slide.active');
+    if(sl){ const box = sl.querySelector('.placar-box'); if(box) box.dataset.sig = ''; pintarPlacar(sl); }
+  }catch(e){ toastDeck('não consegui reabrir as janelas'); }
+}
+async function pintarPlacar(sl){
+  if(!sl || !sl.classList.contains("placar")){ placarEm = null; return; }
+  const box = sl.querySelector(".placar-box"); if(!box) return;
+  if(!POLL_ON){ box.innerHTML='<div class="vazio-placar">placar ao vivo só com a segunda tela ligada</div>'; return; }
+  const novo = placarEm !== sl; placarEm = sl;
+  if(novo){ box.dataset.sig = ""; sl.classList.remove("ativo"); }
+  try{
+    const r = await fetch(POLL_BASE+"/api/leaderboard?session="+encodeURIComponent(POLL_SESSION)
+      +"&deck="+encodeURIComponent(POLL_DECK)+"&qs="+encodeURIComponent(sl.dataset.placar||"")+"&n=10",{cache:"no-store"});
+    const d = await r.json();
+    const sig = JSON.stringify(d.top||[]);
+    const tot = sl.querySelector(".tot");
+    if(tot){
+      tot.textContent = (d.participantes||0) + " participante" + (d.participantes===1?"":"s") + " · " + (d.perguntas||0) + " pergunta" + (d.perguntas===1?"":"s");
+      /* voto depois do closed_at não pontua: janela velha de ensaio zerou o placar em 26/10/2026 */
+      if(d.descartados > 0){ const av = document.createElement("span");
+        av.style.cssText = "margin-left:14px;color:#ff5a5f;font-size:.8em;font-weight:700";
+        av.textContent = d.descartados + " voto" + (d.descartados===1?"":"s") + " fora da janela · tecla J reabre"; tot.appendChild(av); }
+    }
+    if(box.dataset.sig === sig) return;
+    box.dataset.sig = sig;
+    sl.classList.remove("ativo");
+    box.innerHTML = placarHTML(d);
+    void box.offsetWidth;
+    requestAnimationFrame(()=>{
+      sl.classList.add("ativo");
+      box.querySelectorAll(".bloco").forEach(b=>b.style.height=b.dataset.h+"%");
+      box.querySelectorAll(".linha .fill").forEach(f=>f.style.width=f.dataset.w+"%");
+    });
+  }catch(e){}
+}
+function cicloSegundaTela(){
+  const sl = document.querySelector("#deck .slide.active");
+  if(!sl) return;
+  publicarEstado(sl); pintarQuiz(sl); pintarNuvem(sl); pintarPerguntas(sl); pintarEstimativa(sl); pintarPlacar(sl);
+}
+setInterval(cicloSegundaTela, 2500);
+addEventListener("load", cicloSegundaTela);
+/* ao trocar de lâmina, busca na hora — sem isso a lâmina de perguntas pode ficar
+   até 2,5 s em branco, tempo de sobra para o palestrante achar que não chegou nada */
+if(typeof window.show === "function"){
+  const _show = window.show;
+  window.show = function(){ const r = _show.apply(this, arguments); cicloSegundaTela(); return r; };
+}
+
+/* ---------------------------------------------------------------------------
+   MODO ON-LINE (W) — para aula por videoconferência.
+   Sobe os pisos de legibilidade (ver bloco de CSS), desliga as transições que
+   fazem o codec borrar a lâmina seguinte e imprime o endereço ao lado de cada
+   QR, porque de casa o participante digita o link em vez de apontar a câmera.
+   A escolha fica gravada no navegador: abrir o deck de novo mantém o modo.
+   ------------------------------------------------------------------------- */
+function qrEnderecos(){
+  const mapa = window.QR_URLS || {};
+  // os marcadores <!--QR:nome--> sobrevivem no DOM como nós de comentário
+  const it = document.createNodeIterator(document.body, NodeFilter.SHOW_COMMENT);
+  let c;
+  while((c = it.nextNode())){
+    const m = /^QR:(.+)$/.exec((c.nodeValue||'').trim());
+    if(!m || !mapa[m[1]]) continue;
+    const cx = c.parentNode && c.parentNode.closest && c.parentNode.closest('.qrbox,.qrfim');
+    if(!cx || cx.querySelector('.urlqr')) continue;
+    const el = document.createElement('div');
+    el.className = 'urlqr'; el.textContent = mapa[m[1]];
+    cx.appendChild(el);
+  }
+}
+function modoOnline(lig){
+  document.body.classList.toggle('online', !!lig);
+  try{ localStorage.setItem('deck-online', lig ? '1' : '0'); }catch(_){}
+  /* o modo on-line sobe os pisos de tipografia: sem recalcular, a ficha e a tabela
+     crescem por cima da figura. Refaz o encaixe da lamina atual (e da seguinte,
+     que ja esta montada) depois que a nova fonte assentou. */
+  relayout();
+}
+function relayout(){
+  const sl = document.querySelector('#deck .slide.active'); if(!sl) return;
+  const passada = () => { try{ ajustarTitulo(sl); ajustarFiguras(sl); ajustarLeitura(sl);
+    preencherVazio(sl); ajustarTexto(sl); evitarRodape(sl); apertarSePreciso(sl); }catch(_){} };
+  requestAnimationFrame(()=>requestAnimationFrame(passada));
+  setTimeout(passada, 180);
+  setTimeout(passada, 600);
+}
+qrEnderecos();
+try{ if(localStorage.getItem('deck-online')==='1') document.body.classList.add('online'); }catch(_){}
+
+
+/* ============================================================
+   IR PARA — saltar para uma lamina distante sem passar por todas.
+   G ou / abre. Digitar filtra por titulo, por bloco ou por numero.
+   ============================================================ */
+const irEl=document.getElementById('irpara'), irIn=document.getElementById('irbusca'), irLi=document.getElementById('irlista');
+let irItens=[], irSel=0;
+function irMontar(){
+  const v=vis(); let secAtual='';
+  irItens = v.map((idx,k)=>{
+    const sl=slides[idx];
+    const ehSec = sl.classList.contains('secao');
+    if(ehSec) secAtual = tituloDe(sl);
+    const tag = sl.querySelector('.topbar .tag');
+    return {k, titulo: tituloDe(sl), sec: ehSec ? '' : (secAtual || (tag?txtDe(tag):'')), divis: ehSec};
+  });
+}
+function irFiltrar(q){
+  q=(q||'').trim().toLowerCase();
+  if(!q) return irItens;
+  if(/^\d+$/.test(q)){ const n=+q-1; return irItens.filter(it=>it.k===n); }
+  const termos=q.split(/\s+/);
+  return irItens.filter(it=>{
+    const alvo=(it.titulo+' '+it.sec).toLowerCase();
+    return termos.every(t=>alvo.includes(t));
+  });
+}
+function irPintar(){
+  const lista=irFiltrar(irIn.value);
+  if(irSel>=lista.length) irSel=Math.max(0,lista.length-1);
+  irLi.innerHTML = lista.length ? lista.map((it,i)=>
+    '<div class="lin'+(i===irSel?' sel':'')+(it.divis?' divis':'')+'" data-k="'+it.k+'">'
+    +'<span class="num">'+(it.k+1)+'</span>'
+    +'<span class="tit">'+it.titulo.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))+'</span>'
+    +'<span class="sec">'+it.sec.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))+'</span></div>'
+  ).join('') : '<div class="vazio">nada encontrado</div>';
+  const sel=irLi.querySelector('.lin.sel'); if(sel) sel.scrollIntoView({block:'nearest'});
+}
+function irAbrir(){
+  if(org.classList.contains('open')) closeOrg();
+  irMontar(); irSel=0; irIn.value='';
+  /* comeca na lamina atual, para o contexto ficar visivel */
+  const k=cur; const i=irItens.findIndex(it=>it.k===k); if(i>=0) irSel=i;
+  irEl.classList.add('open'); window.__irAberto=true; irPintar(); irIn.focus();
+  const sel=irLi.querySelector('.lin.sel'); if(sel) sel.scrollIntoView({block:'center'});
+}
+function irFechar(){ irEl.classList.remove('open'); window.__irAberto=false; irIn.blur(); }
+function irConfirmar(){
+  const lista=irFiltrar(irIn.value);
+  if(!lista.length) return;
+  const alvo=lista[Math.max(0,Math.min(irSel,lista.length-1))];
+  irFechar(); show(alvo.k);
+}
+window.irAbrir = irAbrir;
+irIn.addEventListener('input',()=>{ irSel=0; irPintar(); });
+irIn.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'){ e.preventDefault(); irSel++; irPintar(); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); irSel=Math.max(0,irSel-1); irPintar(); }
+  else if(e.key==='Enter'){ e.preventDefault(); irConfirmar(); }
+  else if(e.key==='Escape'){ e.preventDefault(); irFechar(); }
+});
+irLi.addEventListener('click',e=>{
+  const lin=e.target.closest('.lin'); if(!lin) return;
+  e.stopPropagation();                 // senao o clique vaza para o deck e avanca um slide
+  irFechar(); show(+lin.dataset.k);
+});
+irEl.addEventListener('click',e=>{ if(e.target===irEl){ e.stopPropagation(); irFechar(); } });
+
+
+/* ============================================================
+   CONTROLE REMOTO — o celular do apresentador passa a lâmina e
+   aponta. O deck faz polling de /api/ctrl.
+   Ritmo adaptativo: 1,2 s parado; 140 ms enquanto há atividade,
+   para o ponteiro não engasgar sem encher o servidor de pedidos.
+   O ponteiro interpola entre os pontos recebidos: o atraso da rede
+   vira um rastro suave em vez de saltos.
+   ============================================================ */
+(function(){
+  /* Dois caminhos, na ordem de latencia:
+     1. LOCAL — /ctrl do proprio servidor da aula (Abrir aula.command). Mesma rede,
+        resposta em milissegundos. E o caminho bom.
+     2. NUVEM — /api/ctrl do app da segunda tela. Serve quando a rede do evento
+        isola os aparelhos, ao preco de ~0,4 s por comando.
+     O deck escuta os DOIS ao mesmo tempo. */
+  const LOCAL = /^https?:/.test(location.protocol) && !/vercel\.app$/.test(location.hostname);
+  if(!LOCAL && !POLL_ON) return;
+  const el = document.getElementById('ptr');
+  let ultimaAtividade = 0;
+  let alvo = null, atualPos = null, raf = null;
+
+  function posicionar(){
+    if(!alvo){ raf = null; return; }
+    const st = document.querySelector('#deck .slide.active .stage') || document.body;
+    const r = st.getBoundingClientRect();
+    if(!atualPos) atualPos = {x: alvo.x, y: alvo.y};
+    atualPos.x += (alvo.x - atualPos.x) * 0.45;      // suavização (0,28 atrasava o halo ~100 ms)
+    atualPos.y += (alvo.y - atualPos.y) * 0.45;
+    el.style.transform = 'translate(' + (r.left + atualPos.x * r.width) + 'px,'
+                                      + (r.top  + atualPos.y * r.height) + 'px)';
+    raf = requestAnimationFrame(posicionar);
+  }
+
+  /* Os DOIS caminhos rodam ao mesmo tempo, cada um com o seu contador de comandos:
+     o celular pode estar no controle.html (rede local) ou no presenter.html (nuvem), e
+     o deck obedece aos dois. Antes, servido pelo Abrir aula.command, ele so lia o local
+     e ignorava a nuvem — o presenter.html nao passava lamina nem apontava. */
+  const seqs = {local: null, nuvem: null}, ptrs = {local: null, nuvem: null};
+  function aplicar(c, src){
+    /* respostas podem chegar fora de ordem (pedidos sobrepostos): um ponto mais antigo
+       que o ultimo aplicado e descartado */
+    ptrs[src] = (c.ptr && c.ptr.on) ? {x: +c.ptr.x || 0, y: +c.ptr.y || 0, ts: +c.ts || Date.now()} : null;
+    const p = (ptrs.local && ptrs.nuvem) ? (ptrs.local.ts >= ptrs.nuvem.ts ? ptrs.local : ptrs.nuvem)
+                                         : (ptrs.local || ptrs.nuvem);
+    if(p){
+      alvo = {x: p.x, y: p.y};
+      el.classList.add('on');
+      if(!raf) raf = requestAnimationFrame(posicionar);
+      ultimaAtividade = Date.now();
+    } else {
+      el.classList.remove('on'); alvo = null; atualPos = null;
+      if(raf){ cancelAnimationFrame(raf); raf = null; }
+    }
+    if(typeof c.seq === 'number'){
+      const u = seqs[src];
+      if(u === null){ seqs[src] = c.seq; return; }       // ao abrir, não reexecuta o último
+      /* servidor reiniciou: o seq volta a zero; comparando so por ">" o deck ignorava
+         todo comando dali em diante. Seq menor = servidor novo: ressincroniza. */
+      if(c.seq < u){ seqs[src] = c.seq; return; }
+      if(c.seq > u){
+        seqs[src] = c.seq; ultimaAtividade = Date.now();
+        const v = vis();
+        if(c.cmd === 'next') next();
+        else if(c.cmd === 'prev') prev();
+        else if(c.cmd === 'first') show(0);
+        else if(c.cmd === 'last') show(v.length - 1);
+        else if(c.cmd === 'goto') show(Math.max(0, Math.min(v.length - 1, (c.n || 1) - 1)));
+        /* teclas que o apresentador usa e que ficam longe quando o notebook esta na mesa */
+        else if(c.cmd === 'revelar') dispatchEvent(new KeyboardEvent('keydown', {key: 'r'}));
+        else if(c.cmd === 'zerar' && typeof zerarSessao === 'function') zerarSessao(true);
+        else if(c.cmd === 'perguntas' && typeof irParaPerguntas === 'function') irParaPerguntas();
+        hideHint();
+      }
+    }
+  }
+
+  const avisou = {local: false, nuvem: false}, emVoo = {local: 0, nuvem: 0};
+  const pedidoN = {local: 0, nuvem: 0}, aplicadoN = {local: 0, nuvem: 0};   // ordem dos pedidos: resposta atrasada e descartada
+  async function poll(src){
+    const url = src === 'local' ? '/ctrl'
+                                : POLL_BASE + '/api/ctrl?session=' + encodeURIComponent(POLL_SESSION);
+    /* aba escondida: a nuvem nao e consultada (cada pedido conta na cota da Vercel) */
+    if(src === 'nuvem' && document.hidden){ setTimeout(() => poll(src), 3000); return; }
+    const rapido = (Date.now() - ultimaAtividade) < 8000;
+    /* na nuvem cada pedido leva ~250 ms: enquanto o ponteiro anda, dispara o proximo
+       ANTES de a resposta chegar (ate 3 em voo), senao o halo anda em degraus. As
+       respostas fora de ordem sao filtradas pelo ts em aplicar(). */
+    const sobrepor = src === 'nuvem' && rapido;
+    if(sobrepor) setTimeout(() => poll(src), 70);
+    if(emVoo[src] >= 3){ return; }
+    emVoo[src]++;
+    const meu = ++pedidoN[src];
+    let ok = false;
+    try{
+      const r = await fetch(url, {cache:'no-store'});
+      if(r.ok){ const c = await r.json(); ok = true;
+        if(meu > aplicadoN[src]){ aplicadoN[src] = meu; aplicar(c, src); }
+        if(!avisou[src]){ avisou[src] = true; console.log('controle remoto: ' + (src === 'local' ? 'rede local' : 'nuvem')); } }
+    }catch(_){}
+    emVoo[src]--;
+    if(sobrepor) return;
+    /* local: pedido barato, consulta rapido e o ponteiro fica colado no dedo; se o
+       servidor sumiu, reprova a cada 3 s. Nuvem parada: 1,2 s. */
+    /* nuvem parada: 1,5 s — 400 ms gastava ~9 mil pedidos/hora por aba aberta e estourou a
+       cota gratuita da Vercel (set-2026). O modo rapido so liga com atividade. */
+    const espera = src === 'local' ? (ok ? (rapido ? 45 : 220) : 3000) : ((Date.now() - ultimaAtividade) < 8000 ? 70 : 1500);
+    setTimeout(() => poll(src), espera);
+  }
+  if(LOCAL) poll('local');
+  if(POLL_ON) poll('nuvem');   /* file:// = script de QA/render, nao aula ao vivo: nunca consultar a nuvem (set-2026, estourou a cota do Redis) */
+})();
+
+/* ---- A TELA NAO APAGA NO MEIO DA AULA ---------------------------------
+   O Mac bloqueou duas vezes durante uma apresentacao (17-set-2026): numa aula
+   o palestrante fica minutos sem tocar no teclado e o sistema entende como
+   ocioso. A Screen Wake Lock segura o display enquanto esta aba esta visivel;
+   o lock cai sozinho ao trocar de aba ou minimizar, entao e repedido quando a
+   aba volta. Exige https ou localhost — por isso a aula tem de ser servida
+   pelo servidor local, nunca aberta por file://. */
+(function(){
+  if(!('wakeLock' in navigator)) return;
+  let lock = null, pedindo = false;
+  async function pedir(){
+    if(lock || pedindo || document.visibilityState !== 'visible') return;
+    pedindo = true;
+    try{
+      lock = await navigator.wakeLock.request('screen');
+      lock.addEventListener('release', () => { lock = null; });
+    }catch(e){ /* bateria fraca ou politica do navegador: segue sem */ }
+    pedindo = false;
+  }
+  pedir();
+  document.addEventListener('visibilitychange', pedir);
+  window.addEventListener('focus', pedir);
+  /* alguns navegadores so concedem apos um gesto: a primeira tecla serve */
+  window.addEventListener('keydown', pedir);
+  window.addEventListener('pointerdown', pedir);
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MODO ANOTACAO (tecla A) — revisar a aula inteira numa sentada.
+   Abre um campo na lamina atual, grava no servidor e segue. Sai daqui um
+   REVISAO.md na pasta da aula, na ordem do deck, que e o que eu leio depois.
+   Sem servidor (file://) o texto fica no navegador e o aviso diz isso.
+   ══════════════════════════════════════════════════════════════════════════ */
+(function(){
+  const LOCAL='revisao-local';
+  let notas={}, prontas=false;
+
+  const guardaLocal=()=>{ try{localStorage.setItem(LOCAL,JSON.stringify(notas));}catch(e){} };
+  const leLocal=()=>{ try{return JSON.parse(localStorage.getItem(LOCAL)||'{}');}catch(e){return {};} };
+
+  async function carregar(){
+    if(prontas) return;
+    prontas=true;
+    notas=leLocal();
+    try{
+      const r=await fetch('/revisao',{cache:'no-store'});
+      if(r.ok){ const d=await r.json(); if(d && typeof d==='object') notas=d; }
+    }catch(e){}                       /* file:// ou servidor antigo: fica o local */
+  }
+
+  const cx=document.createElement('div');
+  cx.id='anot';
+  cx.innerHTML='<div class="cab"><b></b><i></i><button type="button" class="x" title="fechar">×</button></div><textarea rows="3" '+
+    'placeholder="o que está errado nesta lâmina… ou segure espaço e fale"></textarea>'+
+    '<div class="pe"><button type="button" class="mic">🎤 gravar áudio</button>'+
+    '<span>enter ou → próxima · ← anterior · <b>segure espaço para ditar</b> · ⌘↩ ou esc fecha</span><em></em></div>';
+  document.body.appendChild(cx);
+  const cab=cx.querySelector('b'), num=cx.querySelector('i');
+  const ta=cx.querySelector('textarea'), cont=cx.querySelector('em');
+  const mic=cx.querySelector('.mic'), btX=cx.querySelector('.x');
+
+  const atual=()=>document.querySelector('#deck .slide.active');
+  let alvo=null;                 /* a lamina para a qual este campo foi aberto */
+  const idDe=s=>s?(s.dataset.id||''):'';
+  const nDe =s=>{ if(!s) return 0;
+    const todos=[...document.querySelectorAll('#deck .slide')];
+    const i=todos.indexOf(s);
+    const k=vis().indexOf(i);
+    return k>=0 ? k+1 : 0; };
+  const tituloDe=s=>{ if(!s) return '';
+    const h=s.querySelector('.topbar h1')||s.querySelector('h1')||s.querySelector('h2')
+         ||s.querySelector('.kick')||s.querySelector('.cap');
+    return h?h.textContent.trim().replace(/\s+/g,' ').slice(0,90):''; };
+
+  function pinta(){
+    const n=Object.keys(notas).length;
+    const comAudio=Object.values(notas).filter(x=>x&&x.audio).length;
+    cont.textContent = n ? (n+' lâmina'+(n>1?'s':'')+' anotada'+(n>1?'s':'')+
+      (comAudio?' · '+comAudio+' com áudio':'')) : 'nenhuma anotação ainda';
+    document.querySelectorAll('#org .mini').forEach(m=>{
+      const id=m.dataset.id; if(id) m.classList.toggle('temnota', !!notas[id]);
+    });
+  }
+
+  async function grava(){
+    if(!alvo) return;
+    const {id,n,titulo}=alvo, nota=ta.value.trim();
+    const audio=(notas[id]||{}).audio;      /* so texto vazio E sem audio e que apaga */
+    if(nota || audio) notas[id]=Object.assign({},notas[id]||{},{n:n,titulo:titulo,nota:nota});
+    else delete notas[id];
+    guardaLocal(); pinta();
+    try{
+      const r=await fetch('/revisao',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({id:id,n:n,titulo:titulo,nota:nota})});
+      if(!r.ok) cont.textContent = r.status===404
+        ? 'servidor antigo — feche o Terminal e reabra a aula'
+        : 'o servidor recusou ('+r.status+') — guardado só no navegador';
+    }catch(e){
+      cont.textContent = location.protocol==='file:'
+        ? 'sem servidor: guardado só no navegador (abra pelo “Abrir aula.command”)'
+        : 'o servidor não respondeu — guardado só no navegador';
+    }
+  }
+
+
+  /* ── ditar em vez de digitar. O audio vai inteiro para o servidor e eu
+     transcrevo depois com o mlx_whisper, que ja e o padrao das orientacoes. */
+  let rec=null, pedacos=[], t0=0, relogio=null, alvoAudio=null;
+  let querGravar=false;       /* soltar o espaco antes de o mic abrir cancela */
+  const gravando=()=>rec && rec.state==='recording';
+
+  function pintaMic(){
+    if(gravando()){
+      const s=Math.floor((Date.now()-t0)/1000);
+      mic.textContent='■ parar ('+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+')';
+      mic.classList.add('rec');
+    } else {
+      mic.textContent='🎤 gravar áudio';
+      mic.classList.remove('rec');
+    }
+  }
+
+  async function iniciaGrav(){
+    if(!navigator.mediaDevices || !window.MediaRecorder){
+      cont.textContent='este navegador não grava áudio'; return;
+    }
+    if(!alvo || gravando()) return;
+    querGravar=true;
+    alvoAudio={...alvo};                       /* o audio e DESTA lamina, nao da atual */
+    try{
+      const st=await navigator.mediaDevices.getUserMedia({audio:true});
+      pedacos=[];
+      rec=new MediaRecorder(st);
+      rec.ondataavailable=e=>{ if(e.data && e.data.size) pedacos.push(e.data); };
+      rec.onstop=async()=>{
+        st.getTracks().forEach(x=>x.stop());
+        clearInterval(relogio); relogio=null;
+        pintaMic();
+        const blob=new Blob(pedacos,{type:'audio/webm'});
+        if(!blob.size || !alvoAudio) return;
+        cont.textContent='enviando áudio…';
+        try{
+          const q='?id='+encodeURIComponent(alvoAudio.id)+'&n='+alvoAudio.n+
+                  '&titulo='+encodeURIComponent(alvoAudio.titulo||'');
+          const r=await fetch('/revisao-audio'+q,{method:'POST',
+            headers:{'Content-Type':'application/octet-stream'},body:blob});
+          if(r.ok){
+            const d=await r.json();
+            notas[alvoAudio.id]=Object.assign({},notas[alvoAudio.id]||{},
+              {n:alvoAudio.n,titulo:alvoAudio.titulo,audio:d.arquivo,
+               nota:(notas[alvoAudio.id]&&notas[alvoAudio.id].nota)||ta.value.trim()});
+            guardaLocal(); pinta();
+            cont.textContent='áudio gravado · '+Math.round((d.bytes||0)/1024)+' KB';
+            if(alvo && alvo.id===alvoAudio.id && ta.value.trim()) await grava();
+          } else if(r.status===404){
+            cont.textContent='servidor antigo — feche o Terminal e reabra a aula';
+          } else {
+            cont.textContent='o servidor recusou o áudio ('+r.status+')';
+          }
+        }catch(e){
+          cont.textContent = location.protocol==='file:'
+            ? 'abra pelo “Abrir aula.command” para gravar áudio'
+            : 'o servidor não respondeu — o áudio não foi salvo';
+        }
+      };
+      if(!querGravar){ st.getTracks().forEach(x=>x.stop()); rec=null; return; }
+      rec.start();
+      t0=Date.now(); relogio=setInterval(pintaMic,1000); pintaMic();
+    }catch(e){ cont.textContent='sem permissão para o microfone'; }
+  }
+
+  function paraGrav(){ querGravar=false; if(gravando()) rec.stop(); else pintaMic(); }
+
+  /* ── segurar ESPACO grava (push-to-talk), como no proprio Claude Code.
+     O espaco e prevenido no keydown e reinserido no keyup se foi curto — senao
+     nao daria para escrever espaco nenhum no texto. */
+  const ESPERA=380;                    /* abaixo disto e digitacao, acima e ditado */
+  /* O espaco entra NA HORA (no keydown, comportamento normal do campo). Antes ele
+     so era inserido no keyup: quem digita rapido aperta a letra seguinte antes de
+     soltar o espaco e o espaco caia depois dela ("dap ara"). Agora, se a tecla
+     ficar segurada alem de ESPERA, o espaco recem-inserido e retirado e o ditado
+     comeca. */
+  let espTimer=null, espGravou=false, espPos=-1;
+  ta.addEventListener('keydown',e=>{
+    if(e.key!==' '||e.metaKey||e.ctrlKey||e.altKey) return;
+    e.stopPropagation();
+    if(e.repeat){ e.preventDefault(); return; }   /* segurando: nada de espacos em serie */
+    espGravou=false;
+    espPos=ta.selectionStart+1;                   /* onde o espaco vai terminar */
+    clearTimeout(espTimer);
+    espTimer=setTimeout(()=>{
+      if(ta.value.charAt(espPos-1)===' '){        /* tira o espaco do ditado */
+        const p=espPos-1;
+        ta.value=ta.value.slice(0,p)+ta.value.slice(p+1);
+        ta.selectionStart=ta.selectionEnd=p;
+      }
+      espGravou=true; iniciaGrav();
+    },ESPERA);
+  },true);
+  ta.addEventListener('input',()=>{               /* digitou outra coisa: era espaco mesmo */
+    if(espTimer && ta.selectionStart!==espPos){ clearTimeout(espTimer); espTimer=null; }
+  });
+  ta.addEventListener('keyup',e=>{
+    if(e.key!==' ') return;
+    e.stopPropagation();
+    clearTimeout(espTimer); espTimer=null;
+    if(espGravou){ paraGrav(); espGravou=false; }
+  },true);
+
+  mic.addEventListener('click',e=>{ e.preventDefault(); gravando()?paraGrav():iniciaGrav(); ta.focus(); });
+
+  async function abrir(){
+    await carregar();
+    const s=atual(); if(!s) return;
+    alvo={id:idDe(s), n:nDe(s), titulo:tituloDe(s)};
+    cab.textContent=alvo.titulo||alvo.id;
+    num.textContent=alvo.n+' · '+alvo.id;
+    ta.value=(notas[alvo.id]&&notas[alvo.id].nota)||'';
+    pintaMic();
+    pinta();
+    cx.classList.add('on');
+    setTimeout(()=>{ta.focus(); ta.setSelectionRange(ta.value.length,ta.value.length);},30);
+  }
+  function fechar(){ cx.classList.remove('on'); ta.blur(); alvo=null; }
+  const aberto=()=>cx.classList.contains('on');
+
+  /* anda entre LAMINAS (next() revelaria antes os data-passo). Com o campo
+     aberto quem reabre e o observer, senao o campo piscava duas vezes. */
+  function irPara(passo){
+    const s=atual(); if(!s || typeof show!=='function') return false;
+    const todos=[...document.querySelectorAll('#deck .slide')];
+    const v=vis(), k=v.indexOf(todos.indexOf(s)), d=k+passo;
+    if(k<0 || d<0 || d>=v.length) return false;   /* nas pontas, fica */
+    const reabrir=!aberto();
+    show(v[d]);
+    if(reabrir) setTimeout(abrir,160);
+    return true;
+  }
+  const proxima=()=>irPara(1);
+
+  ta.addEventListener('keydown',async e=>{
+    e.stopPropagation();
+    if(e.key==='Escape'){ paraGrav(); grava().then(fechar); return; }
+    /* cmd/ctrl+enter grava e fecha SEM ir para a proxima; cmd/ctrl+. tambem
+       fecha. Servem onde o Esc nao chega — em tela cheia ele e do navegador. */
+    if((e.metaKey||e.ctrlKey) && (e.key==='Enter'||e.key==='.')){
+      e.preventDefault();
+      if(gravando()) paraGrav();
+      await grava(); fechar(); return;
+    }
+    /* o textarea engolia as setas e so dava para avancar clicando. Agora elas
+       andam quando o cursor esta na ponta do texto (ou o campo vazio), e com
+       cmd/alt sempre — o texto em edicao e gravado antes de sair. */
+    if(e.key==='ArrowLeft' || e.key==='ArrowRight'){
+      const d = e.key==='ArrowRight' ? 1 : -1;
+      const ponta = ta.value==='' ||
+        (ta.selectionStart===ta.selectionEnd &&
+         (d<0 ? ta.selectionStart===0 : ta.selectionStart===ta.value.length));
+      if(e.metaKey || e.altKey || ponta){
+        e.preventDefault();
+        if(gravando()){ paraGrav(); return; }
+        await grava();
+        irPara(d);
+        return;
+      }
+    }
+    if(e.key==='Enter' && !e.shiftKey){
+      e.preventDefault();
+      if(gravando()){ paraGrav(); return; }   /* 1o enter so encerra o audio */
+      await grava();
+      fechar();
+      proxima();
+    }
+  });
+
+  document.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey) && (e.key==='Enter'||e.key==='.')){
+      if(aberto()) return;                     /* aberto: quem trata e o textarea */
+      e.preventDefault(); abrir(); return;
+    }
+    if(aberto()) return;                       /* o textarea cuida das proprias teclas */
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    const alvo=e.target;
+    if(alvo && alvo.closest && alvo.closest('input,textarea,select,[contenteditable]:not([contenteditable="false"])')) return;
+    if(window.__irAberto) return;
+    if(e.key==='a'||e.key==='A'){ e.preventDefault(); abrir(); }
+  },true);                                     /* captura: chega antes do handler geral */
+
+
+  /* ══ a lamina trocou com o campo aberto ══
+     Antes o campo continuava mostrando a lamina anterior e o que fosse escrito
+     ia para ELA — em silencio. Agora o texto pendente e gravado na lamina certa
+     e o campo se muda para a nova. */
+  let ultimaAtiva=null;
+  async function sincroniza(){
+    if(!aberto()) return;
+    const s=atual(); if(!s) return;
+    const id=idDe(s);
+    if(alvo && id && id!==alvo.id){
+      if(gravando()) paraGrav();     /* o audio pertence a lamina onde comecou */
+      await grava();                 /* grava no alvo ANTIGO, que ainda esta em alvo */
+      abrir();                       /* reabre ja na lamina nova */
+    }
+  }
+  new MutationObserver(()=>{
+    const s=atual(); const id=idDe(s);
+    if(id!==ultimaAtiva){ ultimaAtiva=id; sincroniza(); }
+  }).observe(document.getElementById('deck')||document.body,
+             {subtree:true, attributes:true, attributeFilter:['class']});
+
+  /* ══ o Esc em tela cheia e do navegador: ele sai do fullscreen e nunca chega
+     aqui. Entao fechamos pelo efeito — ao sair da tela cheia, o campo fecha
+     gravando o que estava escrito. */
+  document.addEventListener('fullscreenchange',()=>{
+    if(!document.fullscreenElement && aberto()){
+      if(gravando()) paraGrav();
+      grava().then(fechar);
+    }
+  });
+
+  btX.addEventListener('click',e=>{ e.preventDefault(); if(gravando())paraGrav(); grava().then(fechar); });
+
+  carregar().then(pinta);
+  window.anotAbrir=abrir;
+})();
+</script>
+</body>

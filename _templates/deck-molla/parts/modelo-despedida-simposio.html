@@ -1,0 +1,42 @@
+ <section class="slide despedida simposio"> <div class="stage">
+ <style>
+ [data-id="despedida"].despedida.simposio .stage{background:#2a0733}
+ [data-id="despedida"] .sbg{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover}
+ [data-id="despedida"] .svel{position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,7,51,.55) 0%,rgba(52,8,63,.72) 100%)}
+ [data-id="despedida"].despedida.simposio h1{position:absolute;left:0;right:0;top:250px;text-align:center;color:#fff;
+   font-size:150px;font-weight:850;letter-spacing:-.02em;line-height:1}
+ [data-id="despedida"].despedida.simposio .autor{position:absolute;left:0;right:0;top:452px;bottom:auto;height:auto;text-align:center;color:#fff;
+   font-size:29px;line-height:1.5;font-weight:600}
+ [data-id="despedida"].despedida.simposio .autor b{font-size:36px;font-weight:850;display:block;margin-bottom:6px}
+ [data-id="despedida"].despedida.simposio .autor span{opacity:.86;font-size:26px}
+ [data-id="despedida"].despedida.simposio .qrfim{position:absolute;right:120px;left:auto;bottom:130px;width:250px;text-align:center}
+ [data-id="despedida"] .qrfim .cx{background:#fff;border-radius:16px;padding:14px}
+ [data-id="despedida"] .qrfim .cap{font-family:var(--font);color:#fff;font-size:21px;font-weight:700;margin-top:12px;line-height:1.3;opacity:.9;letter-spacing:0;text-transform:none}
+ [data-id="despedida"] .real{position:absolute;left:120px;right:auto;bottom:130px;width:max-content;background:#fff;border-radius:20px;
+   padding:24px 44px;text-align:center;box-shadow:0 18px 50px -18px rgba(0,0,0,.5)}
+ [data-id="despedida"] .real .r{font-size:17px;font-weight:850;letter-spacing:.22em;text-transform:uppercase;color:#6D2077;margin-bottom:12px}
+ [data-id="despedida"] .real img{height:58px;display:block}
+ /* no modo on-line a tipografia cresce e o bloco do autor, de largura total,
+    alcanca o QR da direita: aqui ele para antes e alinha a esquerda */
+ body.online [data-id="despedida"].despedida.simposio .autor{left:96px;right:470px;text-align:left}
+ </style>
+ <img class="sbg" src="img/simposio-bg.jpg" alt="">
+ <div class="svel"></div>
+
+ <h1 data-reveal>Obrigado</h1>
+ <div class="autor" data-reveal>
+   <b>SEU NOME</b>
+   <span>CRM 000000</span><br>
+   <span>Sua instituição &nbsp;·&nbsp; Seu serviço</span>
+ </div>
+
+ <div class="real" data-reveal>
+   <div class="r">Realização</div>
+   <img src="img/logo-evento.png" alt="Logo do evento">
+ </div>
+
+ <div class="qrfim" data-reveal>
+   <div class="cx"><!--QR:artigos--><div style="width:100%;aspect-ratio:1/1;background:var(--panel);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:15px;font-weight:700;text-align:center;padding:16px">QR gerado por<br>build_qr.py</div><!--/QR:artigos--></div>
+   <div class="cap">Os artigos desta aula<br>ficam no ar</div>
+ </div>
+ </div> </section>
