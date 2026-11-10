@@ -2,9 +2,9 @@
 """QA geométrico de um deck (1920x1080): colisão com rodapé, sobreposição entre blocos,
 transbordo do palco, subtítulo encoberto e título em mais de 1 linha. Uso: python3 tools/qa_laminas.py deck.html [--online] [--jev]
 Título: h1 em mais de 1 linha OU folga < 60 px até a etiqueta reprova (o Safari desenha a Literata ~2% mais larga
-que o Chromium; com folga menor o título quebra na tela do Vinícius e o portão não via — 04/11/2026).
+que o Chromium; com folga menor o título quebra na tela do apresentador e o portão não via — 04/11/2026).
 Espera 900 ms por lâmina (animações de entrada). Precisa do playwright (Python do Framework).
---jev: fotografa cada lâmina e o Jev 1.14 dá nota de legibilidade "do fundo da sala" (o que a geometria não vê:
+--jev (opcional, requer um classificador próprio em ~/.claude/skills/jev; ignore): fotografa cada lâmina e o Jev 1.14 dá nota de legibilidade "do fundo da sala" (o que a geometria não vê:
 figura de artigo com letra miúda, texto demais). Lista as notas < 1,5 (com < 2 quase tudo caía). ~US$ 0,00012 por lâmina."""
 import asyncio, json, pathlib, subprocess, sys, tempfile
 from playwright.async_api import async_playwright

@@ -6,7 +6,7 @@ Uso:
   python3 build_qr.py --session=sbtmo-2027   # outra turma (votos/perguntas separados)
   python3 build_qr.py --base=https://...     # outra URL do app
 
-O app da segunda tela é compartilhado com a aula de manto (raiz) (manto-segunda-tela.vercel.app);
+O app da segunda tela (não incluído neste kit) fica em POLL_BASE;
 o parâmetro d=AULAID é o que faz o celular carregar os estudos e artigos DESTA aula.
 Os SVG são desenhados localmente (segno); só a URL que carregam é aberta pelo celular.
 """

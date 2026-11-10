@@ -15,32 +15,14 @@ import sys
 BASE = pathlib.Path(__file__).parent
 PARTS = BASE / "parts"
 
-# Laminas do Keynote que eram titulo de bloco e viraram divisoria propria:
-# 13, 16, 20, 33, 37, 43, 62, 64 — nao entram como conteudo.
-SECOES_KEYNOTE = {13, 16, 20, 33, 37, 43, 62, 64}
-# Estavam marcadas como puladas no Keynote — entram ocultas.
-OCULTAS = {3, 11, 23, 67}
-# 06-tabela-escores-kroger (imagem ilegivel) foi substituida por 06-a/b/c nativas; fica oculta.
+SECOES_KEYNOTE = set()   # numeros de laminas do PPTX/Keynote original que viraram divisoria
+OCULTAS = set()          # numeros que entram ocultos
 
+# Exemplo: blocos e a ordem de palco. Itens podem ser nome de part ou numero do original.
 PLANO = [
-    ("ABERTURA", ["capa", "01-evento", "aviso", "segunda", "nuvem", "perfil", "imp-unica", "agenda"]),
-    ("1 · QUANDO TRANSPLANTAR", ["sec-quando", 3, 5, "06-a-escores-pontos", "06-b-escores-risco", "06-c-escores-tratamento", 7, 8, 9, 10, 11, "12-a-dipss-rr",
-                                 "big-sem-tmo", "n-hctfs-itens", "n-fragilidade", "imp-janela"]),
-    ("2 · DESFECHOS", ["sec-desfechos", 14, 15, "syn-nrm-series"]),
-    ("3 · PRE-TCTH", ["sec-pre", 17, 18, 19, "n-deferasirox", "mf1", "mf1-resposta"]),
-    ("4 · ESPLENOMEGALIA", ["sec-baco", 21, 22, 23, "n-svr35-panorama", "n-sentry",
-                            26, 27, 28, 29, 30, 31, 32, "n-esplen-vs-irradiacao", "big-esplenectomia"]),
-    ("5 · iJAK NO TCTH", ["sec-ijak", 38, 39, 40, 41, 42, "n-ruxo-profilaxia", "n-momelo-racional", "n-momelo-tcth", "q2", "q2-resposta", "imp-ijak"]),
-    ("6 · DOADOR E CONDICIONAMENTO", ["sec-doador", 44, 45, "syn-doador", "n-hla-vs-idade-doador",
-                                      "n-idade-doador-haplo", 46, 47, 48, 49, "big-doador", 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-                                      "syn-condicionamento", 61]),
-    ("7 · CITOPENIAS E FALHA DE ENXERTIA", ["sec-citopenias", 34, 35, 36,
-                                            "est-enxertia", "est-enxertia-resposta",
-                                            "n-gf-incidencia", "n-gf-preco", "n-tbi-enxertia", "n-eltrombopag",
-                                            "big-enxertia"]),
-    ("8 · DOENCA RESIDUAL", ["sec-drm", 63, "imp-drm"]),
-    ("9 · CONDUTA", ["sec-conduta", 66, 67, "syn-decisao", "q1pos", "levar", "big-fecho",
-                     "perguntas", "despedida"]),
+    ("ABERTURA", ["capa", "aviso", "segunda", "agenda"]),
+    ("1 · BLOCO", ["sec-bloco1", 1, 2, 3]),
+    ("FECHO", ["levar", "perguntas", "despedida"]),
 ]
 
 
